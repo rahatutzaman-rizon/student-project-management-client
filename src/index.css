@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .btn {
+    @apply text-base normal-case h-auto min-h-[40px] rounded-full px-5;
+  }
+  .btn-primary {
+    @apply text-white;
+  }
+  .btn-outline {
+    @apply hover:!text-white;
+  }
+}
+
+.react-datepicker-wrapper {
+  @apply w-full;
+}
+.react-datepicker-wrapper > * {
+  @apply !flex items-center;
+}
+.react-datepicker-wrapper input {
+  @apply !pl-8;
+}
+.react-datepicker__triangle {
+  @apply !-left-[120px]
+}
+
+.react-pdf__Page {
+  @apply !bg-gray-300 p-4 flex justify-center;
+}

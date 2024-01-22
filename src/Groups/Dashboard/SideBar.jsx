@@ -40,17 +40,17 @@ const SideBar = () => {
   return (
     <div className=''>
 
-      <Sidebar aria-label="Sidebar with content separator example" className=' mt-20 '>
-        <Sidebar.Logo
+      <Sidebar aria-label="Sidebar with content separator example" className=' mt-4 '>
+        {/* <Sidebar.Logo
           href="/"
           //img={img}
           className='w-10 h-10 rounded-full'
           imgAlt="Flowbite logo"
         >
-          {/* <p>
+          <p>
             {user?.displayName || "Demo User" }
-          </p> */}
-        </Sidebar.Logo>
+          </p>
+        </Sidebar.Logo> */}
         <Sidebar.Items>
           <Sidebar.ItemGroup>
             <Sidebar.Item
@@ -65,7 +65,7 @@ const SideBar = () => {
               icon={HiOutlineCloudUpload}
             >
               <p>
-                My Donation
+                Home 
               </p>
             </Sidebar.Item>
 
@@ -74,7 +74,7 @@ const SideBar = () => {
               icon={HiOutlineCloudUpload}
             >
               <p>
-                My Donations Campign
+                Virtual Meeting
               </p>
             </Sidebar.Item>
 
@@ -83,28 +83,14 @@ const SideBar = () => {
               icon={HiInbox}
             >
               <p>
-              Create Donate Camp
+              Progress Report
               </p>
             </Sidebar.Item>
 
 
-            <Sidebar.Item
-              href=""
-              icon={HiInbox}
-            >
-              <p>
-                My Pet
-              </p>
-            </Sidebar.Item>
             
-            <Sidebar.Item
-              href=""
-              icon={HiInbox}
-            >
-              <p>
-               Add pet
-              </p>
-            </Sidebar.Item>
+            
+           
 
 {/* 
             <Sidebar.Item

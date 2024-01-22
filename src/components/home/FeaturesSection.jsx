@@ -1,13 +1,19 @@
 import {IoCreate} from 'react-icons/io5';
 import {FaFilePdf, FaTwitch} from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
+import Marquee from 'react-fast-marquee';
 
 const FeaturesSection = () => {
   return (
     <section className='mt-16'>
       <div className="container">
-        <h2 className="text-3xl font-semibold mb-2 text-center">StudyHub&apos;s <span className="text-primary">Features</span></h2>
-        <p className="max-w-[500px] mx-auto text-center mb-8">Here are given all the features that you will use to improve your group study with StudyHub!</p>
+   <div className='mt-8 text-3xl  bg-sky-200 font-bold'>
+   <Marquee>
+  The next programm held on 24 January on  10AM 
+</Marquee>
+   </div>
+        <h2 className="text-3xl font-semibold mb-2 text-center mt-6">Student Project Mangement&apos;s <span className="text-primary">Features</span></h2>
+        <p className="max-w-[500px] mx-auto text-center mb-8">Here are given all the features that you will use to improve your group study with this app </p>
 
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
           <div className='bg-gray-200 p-6 rounded-lg'>

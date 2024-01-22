@@ -32,12 +32,12 @@ const Header = () => {
         <nav className="flex justify-between items-center gap-6 relative">
           <Link to='/' className="flex justify-center items-center gap-2" onClick={() => scrollTo(0, 0)}>
             {/* <img className="max-w-[30px]" src="/favicon.png" alt="Brand Icon" /> */}
-            <span className="text-2xl font-semibold"><span className="text-primary">Study</span>Hub</span>
+            <span className="text-3xl font-bold ml-12"><span className="text-primary">Student </span>Project Management</span>
           </Link>
 
           {
             userLoaded && user && <>
-           <Link to="/group">Group </Link>
+           <Link to="/group" className="btn btn-success">Group </Link>
 
             </>
           }

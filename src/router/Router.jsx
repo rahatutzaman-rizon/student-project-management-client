@@ -16,6 +16,7 @@ import Groups from "../Groups/Groups";
 import GroupPage from "../Groups/GroupPage";
 //import { DashboardLayout } from "../Groups/Dashboard/DashboardLayout";
 import Dashboard from "../Groups/Dashboard/Dashboard";
+import Move from "../Groups/Dashboard/Move";
 
 export const router = createBrowserRouter([
   {
@@ -67,18 +68,21 @@ export const router = createBrowserRouter([
       element: <PrivateRoute><GroupPage></GroupPage></PrivateRoute>,
       loader:({params})=> fetch(`http://localhost:5000/member/${params.id}`),
     },
-     
-      {
-        path: '/dashboard',
-        element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
-      children:[
 
-     
+    {
+      path: '/move/:id',
+      element: <PrivateRoute><Move></Move></PrivateRoute>,
 
+}
+     
+      // {
+      //   path: '/dashboard',
+      //   element: ,
+      // children:[
 
     
-        ]
-      },
+      //   ]
+      // },
     ]
   }
 ])

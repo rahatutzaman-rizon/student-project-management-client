@@ -3,7 +3,7 @@ const FAQSection = () => {
     <section className="mt-16">
       <div className="container">
         <h2 className="text-3xl font-semibold mb-2 text-center">Frequently Asked <span className="text-primary">Questions</span></h2>
-        <p className="max-w-[500px] mx-auto text-center mb-8">Here are given all the features that you will use to improve your group study with StudyHub!</p>
+        <p className="max-w-[500px] mx-auto text-center mb-8">Here are given all the features that you will use to improve your group project!</p>
 
         <div className="max-w-[900px] mx-auto">
           <div className="collapse collapse-arrow bg-gray-200 mb-2">
@@ -12,7 +12,7 @@ const FAQSection = () => {
               How can I use this platform?
             </div>
             <div className="collapse-content"> 
-              <p>If you want to use the StudyHub platform with your friends to improve your group study, you will have to create and account in StudyHub platform. Then you will be able to create assignment for your friends, submit assignment, review submitted assignments of your friends and so on.</p>
+              <p>If you want to use the  platform with your friends to improve your group study, you will have to create and account in StudyHub platform. Then you will be able to create assignment for your friends, submit assignment, review submitted assignments of your friends and so on.</p>
             </div>
           </div>
           <div className="collapse collapse-arrow bg-gray-200 mb-2">

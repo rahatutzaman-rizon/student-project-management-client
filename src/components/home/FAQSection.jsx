@@ -18,7 +18,7 @@ const FAQSection = () => {
           <div className="collapse collapse-arrow bg-gray-200 mb-2">
             <input type="radio" name="my-accordion-2" /> 
             <div className="collapse-title text-xl font-medium">
-              How can I submit my assignment in StudyHub?
+              How can I submit my assignment in this app?
             </div>
             <div className="collapse-content"> 
               <p>After login, go to the assignments page and select the assignment that you want to submit. Click submit button and submit your assignment pdf link. Then click submit button and you are done. Now your friends are able to review your assignment.</p>

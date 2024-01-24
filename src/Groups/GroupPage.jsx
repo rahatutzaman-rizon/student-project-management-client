@@ -17,7 +17,8 @@ const GroupPage = () => {
   const { id } = useParams();
   console.log(id)
   const member = useLoaderData();
-  console.log(member)
+  const {title}=member;
+  //console.log(member.title)
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
   const status = ["todo", "ongoing", "complete", "incomplete"];
@@ -77,6 +78,7 @@ const GroupPage = () => {
   return (
     <div>
       <div>
+      <h2>hii{title}</h2>
       <Button className="bg-teal-500" onClick={handleToggleForm}>
           {showForm ? 'Close Form' : 'Add Task'}
         </Button>

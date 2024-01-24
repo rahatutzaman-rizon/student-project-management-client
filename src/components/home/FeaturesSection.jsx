@@ -5,15 +5,15 @@ import Marquee from 'react-fast-marquee';
 
 const FeaturesSection = () => {
   return (
-    <section className='mt-16'>
+    <section className='mt-16 ml-16'>
       <div className="container">
-   <div className='mt-8 text-3xl  bg-sky-200 font-bold'>
+   <div className='mt-8 mb-4 text-3xl text-white  bg-teal-400 font-bold'>
    <Marquee>
-  The next programm held on 24 January on  10AM 
+  The next Programm held on 24 January on  10AM 
 </Marquee>
    </div>
         <h2 className="text-3xl font-semibold mb-2 text-center mt-6">Student Project Mangement&apos;s <span className="text-primary">Features</span></h2>
-        <p className="max-w-[500px] mx-auto text-center mb-8">Here are given all the features that you will use to improve your group study with this app </p>
+        <p className="max-w-[500px] mx-auto text-center mb-8">Here are given all the features that you will use to improve your project with this app </p>
 
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
           <div className='bg-gray-200 p-6 rounded-lg'>

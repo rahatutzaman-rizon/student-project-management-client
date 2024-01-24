@@ -15,7 +15,7 @@ import UpdateAssignments from "../pages/UpdateAssignments";
 import Groups from "../Groups/Groups";
 import GroupPage from "../Groups/GroupPage";
 //import { DashboardLayout } from "../Groups/Dashboard/DashboardLayout";
-import Dashboard from "../Groups/Dashboard/Dashboard";
+//import Dashboard from "../Groups/Dashboard/Dashboard";
 import Move from "../Groups/Dashboard/Move";
 
 export const router = createBrowserRouter([

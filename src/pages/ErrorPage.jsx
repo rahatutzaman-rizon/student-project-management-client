@@ -6,7 +6,7 @@ const ErrorPage = () => {
   return (
     <main>
       <Helmet>
-        <title>Page Not Found - StudyHub</title>
+        <title>Page Not Found - Student Project Mangement System</title>
       </Helmet>
 
       <Header />

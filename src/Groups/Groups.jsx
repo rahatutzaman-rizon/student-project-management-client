@@ -18,7 +18,7 @@ const Groups = () => {
      console.log(uniqueGroups);
     return (
         <div>
-           
+           <h1 className=" text-center text-stone text-3xl font-bold">this is teacher groups</h1>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-16 gap-8 my-4 py-10 ml-4 mr-4'>
             {
                 uniqueGroups.map((groups)=>

@@ -1,10 +1,10 @@
+import { Link } from "react-router-dom";
 
 const Move = () => {
 
 
     const handleSubmit=async(e)=>{
         e.preventDefault();
-        const t
     }
 
     return (
@@ -19,9 +19,8 @@ const Move = () => {
                         <option value="completed">COMPLETED</option>
                     </select>
                 </div>
-                <div className="flex justify-center items-center">
-                    <input className="py-1.5 rounded w-3/4 bg-[#b63327] text-white hover:text-[#b63327] hover:bg-white hover:border hover:border-[#b63327] text-xs md:text-base" type="submit" value="Move" />
-                </div>
+               
+                <Link className=" flex justify-center items-center mt-6   text-center btn btn-success" to="/">Move</Link>
             </form>
         </div>
         </div>

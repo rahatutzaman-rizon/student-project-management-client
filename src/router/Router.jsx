@@ -5,7 +5,7 @@ import Home from "../pages/Home";
 import PrivateRouteAlt from "../manageRoute/PrivateRouteAlt";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import Assignments from "../pages/Assignments";
+
 import CreateAssignment from "../pages/CreateAssignment";
 import MyAssignments from "../pages/MyAssignments";
 import SubmittedAssignments from "../pages/SubmittedAssignments";
@@ -17,6 +17,10 @@ import GroupPage from "../Groups/GroupPage";
 //import { DashboardLayout } from "../Groups/Dashboard/DashboardLayout";
 //import Dashboard from "../Groups/Dashboard/Dashboard";
 import Move from "../Groups/Dashboard/Move";
+import Teacher from "../Groups/Teacher";
+import Project from "../pages/Project";
+import Projects from "../pages/Projects";
+import ProjectDetails from "../pages/ProjectDetails";
 
 export const router = createBrowserRouter([
   {
@@ -37,9 +41,18 @@ export const router = createBrowserRouter([
         element: <PrivateRouteAlt><Register /></PrivateRouteAlt>
       },
       {
-        path: '/assignments',
-        element: <Assignments />
+        path: '/project',
+        element: <Project></Project>
       },
+      {
+        path: '/project/:id',
+        element: <Projects></Projects>
+      },
+      {
+        path: '/:team/:id',
+        element: <ProjectDetails></ProjectDetails>
+      },
+
       {
         path: '/assignments/:id',
         element: <PrivateRoute><AssignmentDetails /></PrivateRoute>
@@ -64,6 +77,10 @@ export const router = createBrowserRouter([
         element: <PrivateRoute><Groups></Groups></PrivateRoute>
       },
       
+      {
+        path: '/teacher/:id',
+        element: <PrivateRoute><Teacher></Teacher></PrivateRoute>
+      },
       {path: '/group/:id',
       element: <PrivateRoute><GroupPage></GroupPage></PrivateRoute>,
       loader:({params})=> fetch(`http://localhost:5000/member/${params.id}`),

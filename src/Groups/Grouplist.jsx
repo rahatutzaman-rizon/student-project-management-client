@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 const Grouplist = ({groups}) => {
 
     const {group,professor}=groups;
+    console.log(group,"name")
     //const uniqueGroups = group.filter((grp, index, arr) => arr.findIndex(g => g.group === grp.group) === index);
 
     return (

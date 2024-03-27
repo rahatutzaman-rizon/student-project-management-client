@@ -35,12 +35,12 @@ const Header = () => {
             <span className="text-3xl font-bold ml-12"><span className="text-primary">Student </span>Project Management</span>
           </Link>
 
-          {
+          {/* {
             userLoaded && user && <>
-           <Link to="/group" className="btn btn-success">Group </Link>
+           <Link to="/group" className="btn btn-success"></Link>
 
             </>
-          }
+          } */}
 
           <ul className="flex flex-col xl:flex-row justify-center items-center gap-6 fixed xl:static top-0 bottom-0 bg-white xl:bg-[transparent] w-4/5 max-w-[320px] xl:w-auto xl:max-w-none [box-shadow:-10px_0px_50px_rgba(0,0,0,0.3)] xl:[box-shadow:none] transition-[right] duration-300 z-30 text-xl xl:text-base" style={drawerShow ? {right: "0px"} : {right: "-400px"}}>
             <FaCircleXmark className="xl:hidden text-3xl text-primary absolute left-6 top-6 cursor-pointer" onClick={() => setDrawerShow(false)} />
@@ -53,7 +53,7 @@ const Header = () => {
             {
               userLoaded && user && <>
                 <li>
-                  <NavLink to='/my-assignments' className={({isActive}) => isActive ? "font-bold text-primary" : ""} onClick={() => {setDrawerShow(false); scrollTo(0, 0)}}>My Assignments</NavLink>
+                  <NavLink to='/project' className={({isActive}) => isActive ? "font-bold text-primary" : ""} onClick={() => {setDrawerShow(false); scrollTo(0, 0)}}>Project Progress</NavLink>
                 </li>
                 <li>
                   <NavLink to='/submitted-assignments' className={({isActive}) => isActive ? "font-bold text-primary" : ""} onClick={() => {setDrawerShow(false); scrollTo(0, 0)}}>Submitted Assignments</NavLink>

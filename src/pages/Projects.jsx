@@ -1,8 +1,8 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 const Projects = () => {
-    const {id}=useParams();
+  const { id } = useParams();
   const [teams, setTeams] = useState([]);
 
   useEffect(() => {
@@ -15,9 +15,8 @@ const Projects = () => {
         console.error('Error fetching team data:', error);
       }
     };
-
     fetchTeamData();
-  }, []);
+  }, [id]);
 
   return (
     <div className="container mx-auto py-8">
@@ -28,14 +27,14 @@ const Projects = () => {
             key={team._id}
             className="bg-white rounded-lg shadow-md p-4 hover:bg-gray-100 transition-colors duration-300"
           >
-            <h2 className="text-xl font-semibold">Team {team.team}</h2>
-            <Link 
+            <h2 className="text-xl font-semibold">group {team.team}</h2>
+            <Link
               to={`/team${id}/${team._id}`}
               className="inline-block mt-2 bg-teal-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
               View Details
             </Link>
-            
+            <h2>teacher id {id}  <br />  objectid  {team._id}</h2>
           </li>
         ))}
       </ul>

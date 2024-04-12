@@ -23,9 +23,24 @@ const Project= () => {
         "name": "Michael Johnson",
         "subject": "Physics"
       },
+    
       {
         "id": 4,
         "name": "Emily Davis",
+        "subject": "History"
+      },
+      {
+        "id": 5,
+        "name": "ronneru Davis",
+        "subject": "History"
+      }
+      ,{
+        "id": 6,
+        "name": "deshli Davis",
+        "subject": "History"
+      },{
+        "id": 7,
+        "name": "kana Davis",
         "subject": "History"
       }
     ];

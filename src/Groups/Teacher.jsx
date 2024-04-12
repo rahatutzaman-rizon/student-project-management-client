@@ -212,70 +212,8 @@ console.log(res)
                     ))}
                   </ul>
 
-                  <h3 className="text-xl font-bold mt-4 mb-2">Add New Task</h3>
-                  <div className="mb-4">
-                    <label htmlFor="title" className="block font-bold mb-2">
-                      Title
-                    </label>
-                    <input
-                      type="text"
-                      id="title"
-                      name="title"
-                      value={newTask.title}
-                      onChange={handleInputChange}
-                      className="border border-gray-400 p-2 w-full"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label htmlFor="description" className="block font-bold mb-2">
-                      Description
-                    </label>
-                    <textarea
-                      id="description"
-                      name="description"
-                      value={newTask.description}
-                      onChange={handleInputChange}
-                      className="border border-gray-400 p-2 w-full"
-                    ></textarea>
-                  </div>
-                  <div className="mb-4">
-                    <label htmlFor="assignedTo" className="block font-bold mb-2">
-                      Assigned To
-                    </label>
-                    <select
-                      id="assignedTo"
-                      name="assignedTo"
-                      value={newTask.assignedTo}
-                      onChange={handleInputChange}
-                      className="border border-gray-400 p-2 w-full"
-                    >
-                      <option value={null}>Select a member</option>
-                      {selectedGroup.members.map((member) => (
-                        <option key={member.id} value={member.id}>
-                          {member.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="mb-4">
-                    <label htmlFor="deadline" className="block font-bold mb-2">
-                      Deadline
-                    </label>
-                    <input
-                      type="date"
-                      id="deadline"
-                      name="deadline"
-                      value={newTask.deadline}
-                      onChange={handleInputChange}
-                      className="border border-gray-400 p-2 w-full"
-                    />
-                  </div>
-                  <button
-                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={handleAddTask}
-                  >
-                    Add Task
-                  </button>
+              
+                 
                 </div>
               )}
 

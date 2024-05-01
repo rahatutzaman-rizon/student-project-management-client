@@ -1,20 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
 import { Link, useParams } from 'react-router-dom';
-import { Modal, Button, Label, TextInput, Textarea, Select } from 'flowbite-react';
+import { Modal, Button, Label, TextInput, Textarea, Select, Tooltip } from 'flowbite-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { GlobalContext } from '../context/ContextProvider';
 
 const ProjectDetails = () => {
   const { id, team } = useParams();
   const [project, setProject] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showStatisticsModal, setShowStatisticsModal] = useState(false);
+  const {user} = useContext(GlobalContext);
+  console.log(user)
   const [newTask, setNewTask] = useState({
     number: '',
     title: '',
     description: '',
+    start_date: '',
     deadline: '',
     assignedTo: '',
     status: 'Not Started',
@@ -56,7 +60,7 @@ const ProjectDetails = () => {
           title: '',
           description: '',
           deadline: '',
-          assignedTo: '',
+          start_date: '',
           status: 'Not Started',
         });
         setShowModal(false);
@@ -182,158 +186,192 @@ const ProjectDetails = () => {
     
       <Link
               to={`/project`}
-              className="inline-block mt-2 bg-pink-300 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded"
+              className="inline-block mt-2 mb-2 bg-pink-500 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
             >
               Back 
             </Link>
       </button>
-      <h2 className="text-3xl font-bold  mb-4 bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text">
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      <div className="bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl shadow-lg p-6 text-center">
+        <h2 className="text-xl font-bold text-white mb-4">Supervisor</h2>
+        <p className="text-xl font-extrabold text-white">{project.teacher}</p>
+      </div>
+      <div className="bg-gradient-to-r from-pink-500 to-red-500 rounded-2xl shadow-lg p-6 text-center">
+        <h2 className="text-xl font-bold text-white mb-2">Group NO :</h2>
+        <p className="text-xl font-bold text-white">  {project.team}</p>
+      </div>
+      <div className="bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl shadow-lg p-6 text-center">
+        <h2 className="text-xl font-bold text-white mb-2">Total Tasks: {statistics.totalTasks}</h2>
+        <p className="text-xl font-bold text-white">Completed Tasks: {statistics.completedTasks} </p>
+      </div>
+    </div>
+
+
+      <h2 className="text-3xl mt-12 font-bold  mb-4 bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text">
         {project.name}
       </h2>
-      <p className="text-gray-600 mb-4">{project.description}</p>
-      <div className="mb-4">
-        <h3 className="text-xl font-bold mb-2">Team Members</h3>
-        <ul>
-          {project.members.map((member) => (
-            <li key={member.id} className="text-gray-700">
-              {member.name}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <h2 className="text-3xl mt-4 font-bold  mb-4 bg-gradient-to-r from-teal-500 to-pink-500 text-transparent bg-clip-text">
+        {project.work}
+      </h2>
+      
+    
+     
       <div>
-        <div className="flex mb-4">
-          <button
-            className={`px-4 py-2 rounded-l ${
-              activeButton === 'description'
-                ? 'bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 text-white'
-                : 'bg-gray-200 hover:bg-gray-300'
-            }`}
-            onClick={() => {
-              setActiveButton('description');
-              setActiveTab('description');
-            }}
-          >
-            Description
-          </button>
-          <button
-            className={`px-4 py-2 ${
-              activeButton === 'tasks'
-                ? 'bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 text-white'
-                : 'bg-gray-200 hover:bg-gray-300'
-           }`}
-           onClick={() => {
-             setActiveButton('tasks');
-             setActiveTab('tasks');
-           }}
-         >
-           Tasks
-         </button>
-         <button
-           className={`px-4 py-2 rounded-r ${
-             activeButton === 'statistics'
-               ? 'bg-gradient-to-r from-orange-500 via-yellow-500 to-pink-500 text-white'
-               : 'bg-gray-200 hover:bg-gray-300'
-           }`}
-           onClick={() => {
-             setActiveButton('statistics');
-             setActiveTab('statistics');
-           }}
-         >
-           Statistics
-         </button>
-       </div>
+  <div className="flex mb-4">
+    <button
+      className={`px-4 py-2 rounded-l ${
+        activeButton === 'description'
+          ? 'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white'
+          : 'bg-gray-200 hover:bg-gray-300'
+      }`}
+      onClick={() => {
+        setActiveButton('description');
+        setActiveTab('description');
+      }}
+    >
+      Description
+    </button>
+    <button
+      className={`px-4 py-2 ${
+        activeButton === 'tasks'
+          ? 'bg-gradient-to-r from-green-500 via-teal-500 to-cyan-500 text-white'
+          : 'bg-gray-200 hover:bg-gray-300'
+      }`}
+      onClick={() => {
+        setActiveButton('tasks');
+        setActiveTab('tasks');
+      }}
+    >
+      Tasks
+    </button>
+    <button
+      className={`px-4 py-2 rounded-r  ${
+        activeButton === 'statistics'
+          ? 'bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white'
+          : 'bg-gray-200 hover:bg-gray-300'
+      }`}
+      onClick={() => {
+        setActiveButton('statistics');
+        setActiveTab('statistics');
+      }}
+    >
+      Statistics
+    </button>
+  </div>
 
-       {/* Tab Content */}
-       <div className="flex-grow overflow-auto">
-         {activeTab === 'description' && (
-           <div>
-             <h3 className="text-xl font-bold mb-2">Description:</h3>
-             <p>{project.description}</p>
+  {/* Tab Content */}
+  <div className="flex-grow overflow-auto">
+    {activeTab === 'description' && (
+      <div>
+        <h3 className="text-xl font-bold mb-2 text-indigo-500">Description:</h3>
+        <p>{project.description}</p>
 
-             <h3 className="text-xl font-bold mt-4 mb-2">Members:</h3>
-             <ul className="list-disc pl-4">
-               {project.members.map((member) => (
-                 <li key={member.id}>{member.name}</li>
-               ))}
-             </ul>
-           </div>
-         )}
+        <div className="bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 p-6 rounded-lg shadow-lg">
+  <h3 className="text-xl font-bold mb-4 text-white">Team Members</h3>
+  <ul>
+    {project.members.map((member) => (
+      <li
+        key={member.id}
+        className="bg-white rounded-lg p-4 mb-4 shadow-md text-gray-800"
+      >
+        <span className="font-bold">{member.name}</span>
+        <br />
+        ID: {member.it}
+        <br />
+        Email: {member.mail}
+        <br />
+        Contact: {member.contact}
+      </li>
+    ))}
+  </ul>
+</div>
 
-         {activeTab === 'tasks' && (
-           <div>
-             <h3 className="text-xl font-bold mb-2">Tasks:</h3>
-             <table className="w-full table-auto">
-               <thead>
-                 <tr className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
-                   <th className="px-4 py-2">Number</th>
-                   <th className="px-4 py-2">Title</th>
-                   <th className="px-4 py-2">Deadline</th>
-                   <th className="px-4 py-2">Status</th>
-                   <th className="px-4 py-2">Action</th>
-                 </tr>
-               </thead>
-               <tbody>
-                 {project.tasks.map((task) => (
-                   <tr key={task.number} className="odd:bg-gray-100 even:bg-white">
-                     <td className="px-4 py-2 border">{task.number}</td>
-                     <td className="px-4 py-2 border">{task.title}</td>
-                     <td className="px-4 py-2 border">{task.deadline}</td>
-                     <td className="px-4 py -2 border">
-                       <span
-                         className={`px-2 py-1 rounded-full font-bold bg-white ${
-                           task.status === 'In Progress'
-                             ? 'bg-yellow-200 text-yellow-800'
-                             : task.status === 'Completed'
-                             ? 'bg-green-200 text-green-800'
-                             : 'bg-red-200 text-red-400'
-                         }`}
-                       >
-                         {task.status}
-                       </span>
-                     </td>
-                     <td className="px-4 py-2 border flex gap-2">
-                       <Button color="failure" onClick={() => handleDeleteTask(task.number)}>
-                         Delete
-                       </Button>
-                       <Select
-                         value={task.status}
-                         onChange={(e) => handleStatusUpdate(task.number, e.target.value)}
-                       >
-                         <option value="Not Started">Not Started</option>
-                         <option value="In Progress">In Progress</option>
-                         <option value="Completed">Completed</option>
-                       </Select>
-                     </td>
-                   </tr>
-                 ))}
-               </tbody>
-             </table>
-           </div>
-         )}
+      </div>
+    )}
 
-         {activeTab === 'statistics' && (
-           <div>
-             <h3 className="text-xl font-bold mb-2">Statistics:</h3>
-             <ul className="list-disc pl-4">
-               <li>Total Tasks: {statistics.totalTasks}</li>
-               <li>Completed Tasks: {statistics.completedTasks}</li>
-               <li>In Progress Tasks: {statistics.inProgressTasks}</li>
-               <li>Not Started Tasks: {statistics.notStartedTasks}</li>
-             </ul>
+    {activeTab === 'tasks' && (
+      <div>
+        <h3 className="text-xl font-bold mb-2 text-teal-500">Tasks:</h3>
+        <table className="w-full table-auto">
+          <thead>
+            <tr className="bg-gradient-to-r from-green-500 to-cyan-500 text-white">
+              <th className="px-4 py-2">Number</th>
+              <th className="px-4 py-2">Title</th>
+              <th className="px-4 py-2">Description</th>
+              <th className="px-4 py-2"> Start to Deadline date</th>
+              <th className="px-4 py-2">Status</th>
+              <th className="px-4 py-2">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {project.tasks.map((task) => (
+              <tr key={task.number} className="odd:bg-gray-100 even:bg-white">
+                <td className="px-4 py-2 border">{task.number}</td>
+                <td className="px-4 py-2 border">{task.title}</td>
+                <td className="px-4 py-2 border">
+                  <Tooltip content={task.description}>
+                    <Button>Description</Button>
+                  </Tooltip>
+                </td>
+                <td className="px-4 py-2 border">
+                  {task.start_date} to {task.deadline}
+                </td>
+                <td className="px-4 py-2 border">
+                  <span
+                    className={`px-2 py-1 rounded-full font-bold bg-white ${
+                      task.status === 'In Progress'
+                        ? 'bg-yellow-200 text-yellow-800'
+                        : task.status === 'Completed'
+                        ? 'bg-green-200 text-green-800'
+                        : 'bg-red-200 text-red-400'
+                    }`}
+                  >
+                    {task.status}
+                  </span>
+                </td>
+                <td className="px-4 py-2 border flex gap-2">
+                  <Button color="failure" onClick={() => handleDeleteTask(task.number)}>
+                    Delete
+                  </Button>
+                  <Select
+                    value={task.status}
+                    onChange={(e) => handleStatusUpdate(task.number, e.target.value)}
+                  >
+                    <option value="Not Started">Not Started</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                  </Select>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
 
-             <h3 className="text-xl font-bold mt-4 mb-2">Overall Progress:</h3>
-             <p>{overallPerformance()}</p>
+    {activeTab === 'statistics' && (
+      <div>
+        <h3 className="text-xl font-bold mb-2 text-orange-500">Statistics:</h3>
+        <ul className="list-disc pl-4">
+          <li>Total Tasks: {statistics.totalTasks}</li>
+          <li>Completed Tasks: {statistics.completedTasks}</li>
+          <li>In Progress Tasks: {statistics.inProgressTasks}</li>
+          <li>Not Started Tasks: {statistics.notStartedTasks}</li>
+        </ul>
 
-             <h3 className="text-xl font-bold mt-4 mb-4">Task Statistics:</h3>
-             <div className="h-64">
-               <Pie data={chartData} options={options} />
-             </div>
-           </div>
-         )}
-       </div>
-     </div>
+        <h3 className="text-xl font-bold mt-4 mb-2 text-red-500">Overall Progress:</h3>
+        <p>{overallPerformance()}</p>
 
+        <h3 className="text-xl font-bold mt-4 mb-4 text-pink-500">Task Statistics:</h3>
+        <div className="h-64">
+          <Pie data={chartData} options={options} />
+        </div>
+      </div>
+    )}
+  </div>
+</div>
+     
      <div className="mt-4">
        <Button onClick={() => setShowModal(true)}>Add Task</Button>
      </div>
@@ -377,6 +415,21 @@ const ProjectDetails = () => {
                name="description"
                value={newTask.description}
                onChange={handleInputChange}
+               required
+             />
+           </div>
+
+
+           <div>
+             <div className="mb-2 block">
+               <Label htmlFor="start_date" value="start_date" />
+             </div>
+             <TextInput
+               id="start_date"
+               name="start_date"
+               value={newTask.start_date}
+               onChange={handleInputChange}
+               type="date"
                required
              />
            </div>

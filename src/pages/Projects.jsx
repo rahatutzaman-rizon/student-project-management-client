@@ -19,26 +19,38 @@ const Projects = () => {
   }, [id]);
 
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-4">Teams</h1>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {teams.map((team) => (
-          <li
-            key={team._id}
-            className="bg-white rounded-lg shadow-md p-4 hover:bg-gray-100 transition-colors duration-300"
+   
+    <div className="bg-white min-h-screen flex items-center justify-center">
+  <div className="bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600 rounded-3xl shadow-2xl p-8 max-w-5xl">
+    <h1 className="text-4xl font-extrabold mb-8 text-center text-white drop-shadow-lg tracking-wide">
+      Total Groups: {teams.length}
+    </h1>
+    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      {teams.map((team) => (
+        <li
+          key={team._id}
+          className="bg-white rounded-3xl shadow-2xl p-6 hover:scale-105 transition-transform duration-300 relative"
+        >
+          <div className="mb-6">
+            <h2 className="text-3xl text-center font-bold text-teal-600 mb-2">
+              Group {team.team}
+            </h2>
+            <h3 className=" bg-lime-600 text-sm text-center font-semibold text-white mb-2 rounded">
+            {team.work}
+            </h3>
+            <p className="text-sky-500 min-h-20"> {team.name}</p>
+          </div>
+          <Link
+            to={`/team${id}/${team._id}`}
+            className="inline-block bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600 text-white font-bold py-3 px-6 rounded-full hover:scale-105 transition-transform duration-300 shadow-md"
           >
-            <h2 className="text-xl font-semibold">group {team.team}</h2>
-            <Link
-              to={`/team${id}/${team._id}`}
-              className="inline-block mt-2 bg-teal-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              View Details
-            </Link>
-            <h2>teacher id {id}  <br />  objectid  {team._id}</h2>
-          </li>
-        ))}
-      </ul>
-    </div>
+            View Details
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
   );
 };
 

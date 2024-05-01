@@ -9,10 +9,7 @@ const HeroSection = () => {
           <div>
             <h1 className="text-5xl font-semibold leading-[1.2] mb-2">Welcome to <span className="text-primary">Student </span>Project Mangement</h1>
             <p className="max-w-[550px]">Student Project Management is an online  project based web platform, where people can took part in group study with his friends. They can create, submit, review assignments of each other in this platform.</p>
-            <div className="flex items-center gap-2 mt-6">
-              <Link to="/assignments" className="btn btn-primary" onClick={() => scrollTo(0, 0)}>Assignments</Link>
-              <Link to='/create-assignment' className="btn btn-primary btn-outline" onClick={() => scrollTo(0, 0)}>Create</Link>
-            </div>
+          
           </div>
 
           <div>

@@ -47,20 +47,20 @@ const Header = () => {
             <li>
               <NavLink to='/' className={({isActive}) => isActive ? "font-bold text-primary" : ""} onClick={() => {setDrawerShow(false); scrollTo(0, 0)}}>Home</NavLink>
             </li>
-            <li>
+            {/* <li>
               <NavLink to='/assignments' className={({isActive}) => isActive ? "font-bold text-primary" : ""} onClick={() => {setDrawerShow(false); scrollTo(0, 0)}}>Assignments</NavLink>
-            </li>
+            </li> */}
             {
               userLoaded && user && <>
                 <li>
                   <NavLink to='/project' className={({isActive}) => isActive ? "font-bold text-primary" : ""} onClick={() => {setDrawerShow(false); scrollTo(0, 0)}}>Project Progress</NavLink>
                 </li>
-                <li>
+                {/* <li>
                   <NavLink to='/submitted-assignments' className={({isActive}) => isActive ? "font-bold text-primary" : ""} onClick={() => {setDrawerShow(false); scrollTo(0, 0)}}>Submitted Assignments</NavLink>
                 </li>
                 <li>
                   <NavLink to='/create-assignment' className={({isActive}) => isActive ? "font-bold text-primary" : ""} onClick={() => {setDrawerShow(false); scrollTo(0, 0)}}>Create Assignment</NavLink>
-                </li>
+                </li> */}
               </>
             }
           </ul>

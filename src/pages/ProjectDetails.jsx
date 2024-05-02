@@ -88,7 +88,7 @@ const ProjectDetails = () => {
 
       if (response.ok) {
         // Fetch the updated project data
-        const updatedProject = await fetch(`http://localhost:5000/${team}/${id}`)
+        const updatedProject = await fetch( `http://localhost:5000/${team}/${id}`)
           .then((res) => res.json());
         setProject(updatedProject);
         toast.success('Task deleted successfully!');
@@ -143,8 +143,11 @@ const ProjectDetails = () => {
     datasets: [
       {
         data: [statistics.completedTasks, statistics.inProgressTasks, statistics.notStartedTasks],
-        backgroundColor: ['#4caf50', '#ffeb3b', '#f44336'],
+        backgroundColor: ['#4cad88', '#ffbb3b', '#f44336'],
         hoverBackgroundColor: ['#388e3c', '#fbc02d', '#e53935'],
+        font: {
+          size: 40,
+        },
       },
     ],
   };
@@ -157,7 +160,7 @@ const ProjectDetails = () => {
         display: true,
         text: 'Tasks Progress',
         font: {
-          size: 20,
+          size: 40,
         },
       },
     },
@@ -194,16 +197,20 @@ const ProjectDetails = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
       <div className="bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl shadow-lg p-6 text-center">
-        <h2 className="text-xl font-bold text-white mb-4">Supervisor</h2>
-        <p className="text-xl font-extrabold text-white">{project.teacher}</p>
+        <h2 className="text-2xl font-bold text-white mb-4">Supervisor</h2>
+        <p className="text-2xl font-extrabold text-white">{project.teacher}</p>
+        <p className="text-xl font-bold text-white">{project.designation}</p>
       </div>
       <div className="bg-gradient-to-r from-pink-500 to-red-500 rounded-2xl shadow-lg p-6 text-center">
-        <h2 className="text-xl font-bold text-white mb-2">Group NO :</h2>
-        <p className="text-xl font-bold text-white">  {project.team}</p>
+        <h2 className="text-2xl font-bold text-white mb-2">Group NO : {project.team}</h2>
+        <p className="text-2xl font-bold text-white">  </p>
+           <p className="text-2xl font-bold text-white">  {project.members[0].name}</p>
+            <p className="text-2xl font-bold text-white">  {project.members[1].name}</p>
+            
       </div>
       <div className="bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl shadow-lg p-6 text-center">
-        <h2 className="text-xl font-bold text-white mb-2">Total Tasks: {statistics.totalTasks}</h2>
-        <p className="text-xl font-bold text-white">Completed Tasks: {statistics.completedTasks} </p>
+        <h2 className="text-2xl font-bold text-white mb-2">Total Tasks: {statistics.totalTasks}</h2>
+        <p className="text-2xl font-bold text-white">Completed Tasks: {statistics.completedTasks} </p>
       </div>
     </div>
 
@@ -212,7 +219,7 @@ const ProjectDetails = () => {
         {project.name}
       </h2>
       <h2 className="text-3xl mt-4 font-bold  mb-4 bg-gradient-to-r from-teal-500 to-pink-500 text-transparent bg-clip-text">
-        {project.work}
+        Type:   {project.work}  
       </h2>
       
     
@@ -264,18 +271,18 @@ const ProjectDetails = () => {
   <div className="flex-grow overflow-auto">
     {activeTab === 'description' && (
       <div>
-        <h3 className="text-xl font-bold mb-2 text-indigo-500">Description:</h3>
-        <p>{project.description}</p>
+        <h3 className="text-2xl font-bold mb-4 text-indigo-500 mt-2">Description:</h3>
+        <p className='text-purple-700 font-semibold'>{project.description}</p>
 
-        <div className="bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 p-6 rounded-lg shadow-lg">
-  <h3 className="text-xl font-bold mb-4 text-white">Team Members</h3>
+        <div className=" mt-4 bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 p-6 rounded-lg shadow-lg">
+  <h3 className="text-xl font-bold mb-4  text-white">Team Members</h3>
   <ul>
     {project.members.map((member) => (
       <li
         key={member.id}
-        className="bg-white rounded-lg p-4 mb-4 shadow-md text-gray-800"
+        className="bg-white rounded-lg p-4 mb-4 shadow-md text-black text-xl"
       >
-        <span className="font-bold">{member.name}</span>
+        <span className="font-bold">Member Name: {member.name}</span>
         <br />
         ID: {member.it}
         <br />
@@ -351,29 +358,43 @@ const ProjectDetails = () => {
     )}
 
     {activeTab === 'statistics' && (
-      <div>
-        <h3 className="text-xl font-bold mb-2 text-orange-500">Statistics:</h3>
-        <ul className="list-disc pl-4">
-          <li>Total Tasks: {statistics.totalTasks}</li>
-          <li>Completed Tasks: {statistics.completedTasks}</li>
-          <li>In Progress Tasks: {statistics.inProgressTasks}</li>
-          <li>Not Started Tasks: {statistics.notStartedTasks}</li>
-        </ul>
-
-        <h3 className="text-xl font-bold mt-4 mb-2 text-red-500">Overall Progress:</h3>
-        <p>{overallPerformance()}</p>
-
-        <h3 className="text-xl font-bold mt-4 mb-4 text-pink-500">Task Statistics:</h3>
-        <div className="h-64">
-          <Pie data={chartData} options={options} />
-        </div>
-      </div>
+      <div className="bg-gradient-to-r from-indigo-500 to-purple-700 rounded-lg p-6 shadow-lg">
+  <h3 className="text-2xl font-bold mb-4 text-white">Project Overview</h3>
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
+    <div className="bg-white rounded-lg p-4 shadow-md">
+      <h4 className="text-2xl font-semibold text-gray-700 mb-2">Total Tasks</h4>
+      <p className="text-3xl font-bold text-indigo-600">{statistics.totalTasks}</p>
+    </div>
+    <div className="bg-white rounded-lg p-4 shadow-md">
+      <h4 className="text-2xl font-semibold text-gray-700 mb-2">Completed Tasks</h4>
+      <p className="text-3xl font-bold text-green-600">{statistics.completedTasks}</p>
+    </div>
+    <div className="bg-white rounded-lg p-4 shadow-md">
+      <h4 className="text-2xl font-semibold text-gray-700 mb-2">In Progress Tasks</h4>
+      <p className="text-3xl font-bold text-yellow-600">{statistics.inProgressTasks}</p>
+    </div>
+    <div className="bg-white rounded-lg p-4 shadow-md">
+      <h4 className="text-2xl font-semibold text-gray-700 mb-2">Not Started Tasks</h4>
+      <p className="text-3xl font-bold text-red-600">{statistics.notStartedTasks}</p>
+    </div>
+  </div>
+  <div className="bg-white rounded-lg p-6 shadow-md">
+    <h3 className="text-2xl font-bold mb-4 text-gray-700">Overall Progress</h3>
+    <p className="text-3xl text-pink-600">{overallPerformance()}</p>
+  </div>
+  <div className="bg-white rounded-lg p-6 shadow-md mt-6">
+    <h3 className="text-3xl font-bold mb-4 text-teal-700">Task Statistics</h3>
+    <div className="h-64">
+      <Pie data={chartData} options={options} />
+    </div>
+  </div>
+</div>
     )}
   </div>
 </div>
      
      <div className="mt-4">
-       <Button onClick={() => setShowModal(true)}>Add Task</Button>
+       <Button onClick={() => setShowModal(true)}>Add Task with Email</Button>
      </div>
 
      <Modal show={showModal} onClose={() => setShowModal(false)}>
@@ -488,37 +509,8 @@ const ProjectDetails = () => {
            </Button>
 
 </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="text-lg font-bold mb-4">Statistical Result</h3>
-              <ul className="space-y-2">
-                <li>
-                  <span className="font-bold">Total Tasks:</span> {statistics.totalTasks}
-                </li>
-                <li>
-                  <span className="font-bold">Completed Tasks:</span> {statistics.completedTasks}
-                </li>
-                <li>
-                  <span className="font-bold">In Progress Tasks:</span> {statistics.inProgressTasks}
-                </li>
-                <li>
-                  <span className="font-bold">Not Started Tasks:</span> {statistics.notStartedTasks}
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-bold mb-4">Overall Performance</h3>
-              <div className="bg-green-100 text-green-800 rounded-full py-4 px-8">
-                <span className="text-4xl font-bold">{overallPerformance()}</span>
-              </div>
-            </div>
-          </div>
-          <div className="mt-8">
-            <h3 className="text-lg font-bold mb-4">Task Progress Chart</h3>
-            <div className="h-64">
-              <Pie data={chartData} options={options} />
-            </div>
-          </div>
+         
+          
         </div>
       </Modal>
     </div>

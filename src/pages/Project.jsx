@@ -81,7 +81,7 @@ const Project = () => {
         {teachers.map((teacher) => (
           <li key={teacher.id} className="bg-white rounded-lg shadow-md p-2">
             <Card imgAlt={teacher.name}>
-              <div className="relative h-48">
+              <div className="relative h-56">
                 <img
                   src={teacher.image}
                   alt={teacher.name}

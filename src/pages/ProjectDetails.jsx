@@ -490,7 +490,7 @@ const ProjectDetails = () => {
            Close
          </Button>
          <Button color="success" onClick={handleAddTask}>
-           Submit
+           Submit with Email
          </Button>
        </Modal.Footer>
      </Modal>

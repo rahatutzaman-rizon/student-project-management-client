@@ -93,7 +93,7 @@ const Login = () => {
                   showEye ? showPass ? <AiFillEyeInvisible className="absolute top-1/2 right-4 -translate-y-1/2 text-2xl cursor-pointer" onClick={() => setShowPass(!showPass)} /> : <AiFillEye className="absolute top-1/2 right-4 -translate-y-1/2 text-2xl cursor-pointer" onClick={() => setShowPass(!showPass)} /> : ''
                 }
               </div>
-              <button type="submit" className="btn btn-primary btn-block !rounded-md mt-5">Login</button>
+              <button type="submit" className="bg-sky-300 btn-block !rounded-md mt-5">Login</button>
             </form>
             <p className="font-semibold text-center mt-6">Don&apos;t have an account? <Link to='/register' className="text-primary" onClick={() => scrollTo(0, 0)} state={prevState}>Register</Link></p>
 

@@ -21,6 +21,7 @@ import Teacher from "../Groups/Teacher";
 import Project from "../pages/Project";
 import Projects from "../pages/Projects";
 import ProjectDetails from "../pages/ProjectDetails";
+import Update from "../pages/Update";
 
 export const router = createBrowserRouter([
   {
@@ -75,6 +76,11 @@ export const router = createBrowserRouter([
       },   {
         path: '/group',
         element: <PrivateRoute><Groups></Groups></PrivateRoute>
+      },
+
+      {
+        path: '/update',
+        element: <PrivateRoute><Update></Update></PrivateRoute>
       },
       
       {

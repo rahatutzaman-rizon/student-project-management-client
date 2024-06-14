@@ -51,7 +51,7 @@ const GroupPage = () => {
     };
     console.log(allObject)
 
-    fetch("http://localhost:5000/member", {
+    fetch("https://student-project-management-server.vercel.app/member", {
       method: "POST",
       headers: {
         "Content-type": "application/json",

@@ -89,7 +89,7 @@ export const router = createBrowserRouter([
       },
       {path: '/group/:id',
       element: <PrivateRoute><GroupPage></GroupPage></PrivateRoute>,
-      loader:({params})=> fetch(`http://localhost:5000/member/${params.id}`),
+      loader:({params})=> fetch(`https://student-project-management-server.vercel.app/member/${params.id}`),
     },
 
     {

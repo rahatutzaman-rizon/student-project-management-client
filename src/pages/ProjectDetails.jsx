@@ -27,7 +27,7 @@ const ProjectDetails = () => {
   const [activeButton, setActiveButton] = useState('');
 
   useEffect(() => {
-    fetch(`http://localhost:5000/${team}/${id}`)
+    fetch(`https://student-project-management-server.vercel.app/${team}/${id}`)
       .then((response) => response.json())
       .then((data) => setProject(data));
   }, [id, team]);
@@ -45,7 +45,7 @@ const ProjectDetails = () => {
 
   const handleAddTask = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/add-task/${team}/${id}`, {
+      const response = await fetch(`https://student-project-management-server.vercel.app/add-task/${team}/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const ProjectDetails = () => {
         setShowModal(false);
 
         // Fetch the updated project data
-        const updatedProject = await fetch(`http://localhost:5000/${team}/${id}`)
+        const updatedProject = await fetch(`https://student-project-management-server.vercel.app/${team}/${id}`)
           .then((res) => res.json());
         setProject(updatedProject);
         toast.success('Task added successfully!');
@@ -82,13 +82,13 @@ const ProjectDetails = () => {
 
   const handleDeleteTask = async (taskNumber) => {
     try {
-      const response = await fetch(`http://localhost:5000/delete-task/${team}/${id}/${taskNumber}`, {
+      const response = await fetch(`https://student-project-management-server.vercel.app/delete-task/${team}/${id}/${taskNumber}`, {
         method: 'DELETE',
       });
 
       if (response.ok) {
         // Fetch the updated project data
-        const updatedProject = await fetch( `http://localhost:5000/${team}/${id}`)
+        const updatedProject = await fetch( `https://student-project-management-server.vercel.app/${team}/${id}`)
           .then((res) => res.json());
         setProject(updatedProject);
         toast.success('Task deleted successfully!');
@@ -104,7 +104,7 @@ const ProjectDetails = () => {
 
   const handleStatusUpdate = async (taskNumber, newStatus) => {
     try {
-      const response = await fetch(`http://localhost:5000/update-task-status/${team}/${id}/${taskNumber}`, {
+      const response = await fetch(`https://student-project-management-server.vercel.app/update-task-status/${team}/${id}/${taskNumber}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ const ProjectDetails = () => {
 
       if (response.ok) {
         // Fetch the updated project data
-        const updatedProject = await fetch(`http://localhost:5000/${team}/${id}`)
+        const updatedProject = await fetch(`https://student-project-management-server.vercel.app/${team}/${id}`)
           .then((res) => res.json());
         setProject(updatedProject);
         toast.success('Task status updated successfully!');

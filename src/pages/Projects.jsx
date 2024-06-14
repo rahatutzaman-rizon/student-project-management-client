@@ -8,7 +8,7 @@ const Projects = () => {
   useEffect(() => {
     const fetchTeamData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/${id}`);
+        const response = await fetch(`https://student-project-management-server.vercel.app/${id}`);
         const data = await response.json();
         setTeams(data);
       } catch (error) {

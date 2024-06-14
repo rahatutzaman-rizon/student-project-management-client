@@ -9,7 +9,7 @@ const Footer = () => {
           <div>
             <div className="ml-8 items-center gap-2">
              
-              <span className="text-2xl font-semibold"><span className="text-primary">Study</span>Project Management</span>
+              <span className="text-2xl font-semibold"><span className="text-primary">Student</span>Project Management</span>
             </div>
             <p className='max-w-[400px] mt-3 ml-6'>Let&apos;s study together with friends and get higher facilities in group study with this platform.</p>
             <div className='text-2xl text-primary flex items-center gap-4 mt-6 ml-6'>

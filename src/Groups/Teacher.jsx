@@ -22,7 +22,7 @@ const Teacher = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/${id}`);
+        const response = await fetch(`https://student-project-management-server.vercel.app/${id}`);
         const data = await response.json();
 
         const groupsWithStatistics = data.map((group) => {
@@ -99,7 +99,7 @@ const Teacher = () => {
 
     });
 
-    axios.put(`http://localhost:5000/taskUpdate/${id}`, newTask)
+    axios.put(`https://student-project-management-server.vercel.app/taskUpdate/${id}`, newTask)
 .then(res =>{
 console.log(res)
 })

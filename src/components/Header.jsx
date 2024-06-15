@@ -31,6 +31,9 @@ const Header = () => {
       <li>
         <NavLink to='/' className={({ isActive }) => isActive ? "font-bold text-teal-400" : "text-gray-800"} onClick={() => setDrawerShow(false)}>Home</NavLink>
       </li>
+      <li>
+        <NavLink to='/login' className={({ isActive }) => isActive ? "font-bold text-teal-400" : "text-gray-800"} onClick={() => setDrawerShow(false)}>Login</NavLink>
+      </li>
       {userLoaded && user && (
         <>
           <li>

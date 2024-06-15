@@ -44,6 +44,7 @@
     "react-router-dom": "^6.21.1",
     "react-slick": "^0.29.0",
     "react-spring": "^9.7.3",
+    "react-to-print": "^2.15.1",
     "react-toastify": "^10.0.5",
     "sheetjs": "^2.0.0",
     "slick-carousel": "^1.8.1",

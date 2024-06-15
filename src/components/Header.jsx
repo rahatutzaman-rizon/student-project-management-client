@@ -1,102 +1,101 @@
 import { useContext, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { GlobalContext } from "../context/ContextProvider";
-import {FaCircleXmark, FaBars} from 'react-icons/fa6';
-import HeroSection from "./home/HeroSection";
+import { FaBars, FaChevronDown } from 'react-icons/fa';
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase.config";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../hooks/useAxios";
+import HeroSection from "./home/HeroSection";
 
 const Header = () => {
-  const {user, userLoaded} = useContext(GlobalContext);
+  const { user, userLoaded } = useContext(GlobalContext);
   const [drawerShow, setDrawerShow] = useState(false);
   const [profileShow, setProfileShow] = useState(false);
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
-        axiosInstance('/logout', {headers: {Authorization: user?.email}})
+        axiosInstance('/logout', { headers: { Authorization: user?.email } })
           .then(res => console.log(res.data));
         toast.success('Logout Successful !!!');
       })
       .catch(error => {
         toast.error(error.code);
-      })
-  }
+      });
+  };
+
+  const renderNavLinks = () => (
+    <ul className="flex flex-col lg:flex-row lg:items-center lg:gap-6">
+      <li>
+        <NavLink to='/' className={({ isActive }) => isActive ? "font-bold text-teal-400" : "text-gray-800"} onClick={() => setDrawerShow(false)}>Home</NavLink>
+      </li>
+      {userLoaded && user && (
+        <>
+          <li>
+            <NavLink to='/project' className={({ isActive }) => isActive ? "font-bold text-teal-400" : "text-gray-800"} onClick={() => setDrawerShow(false)}>Teacher</NavLink>
+          </li>
+          <li>
+            <NavLink to='/group' className={({ isActive }) => isActive ? "font-bold text-teal-400" : "text-gray-800"} onClick={() => setDrawerShow(false)}>Student</NavLink>
+          </li>
+          <li>
+            <NavLink to='/update' className={({ isActive }) => isActive ? "font-bold text-teal-400" : "text-gray-800"} onClick={() => setDrawerShow(false)}>Excel</NavLink>
+          </li>
+        </>
+      )}
+    </ul>
+  );
+
+  const renderUserProfile = () => (
+    <div className="relative">
+      <div className="flex items-center gap-2 cursor-pointer" onClick={() => setProfileShow(!profileShow)}>
+        <img className="w-10 h-10 rounded-full" src={user?.photoURL} alt="User" />
+        <FaChevronDown className={`transition-transform ${profileShow ? 'rotate-180' : ''}`} />
+      </div>
+      <div className={`absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg ${profileShow ? 'block' : 'hidden'}`}>
+        <div className="px-4 py-3">
+          <img className="w-16 h-16 rounded-full mb-2" src={user?.photoURL} alt="User" />
+          <p className="text-gray-800 font-medium">{user?.displayName}</p>
+          <p className="text-gray-600">{user?.email}</p>
+        </div>
+        <div className="border-t border-gray-200">
+          <button className="w-full px-4 py-2 text-left text-teal-400 hover:bg-gray-100" onClick={handleLogout}>Logout</button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
-    <header className={`py-4 ${pathname === '/' ? 'bg-gray-200' : 'bg-white'}`}>
-      <div className="container">
-        <nav className="flex justify-between items-center gap-6 relative">
-          <Link to='/' className="flex justify-center items-center gap-2" onClick={() => scrollTo(0, 0)}>
-            {/* <img className="max-w-[30px]" src="/favicon.png" alt="Brand Icon" /> */}
-            <span className="text-3xl font-bold ml-12"><span className="text-primary">Student </span>Project Management</span>
+    <header className="py-4 bg-white shadow-md">
+      <div className="container mx-auto px-4">
+        <nav className="flex justify-between items-center">
+          <Link to='/' className="flex items-center gap-2" onClick={() => setDrawerShow(false)}>
+            <span className="text-2xl font-bold text-gray-800"><span className="text-teal-400">Student</span> Project Management</span>
           </Link>
-
-          {
-            userLoaded && user && <>
-           <Link to="/group" className="btn btn-success">Groups</Link>
-
-            </>
-          }
-
-          <ul className="flex flex-col xl:flex-row justify-center items-center gap-6 fixed xl:static top-0 bottom-0 bg-white xl:bg-[transparent] w-4/5 max-w-[320px] xl:w-auto xl:max-w-none [box-shadow:-10px_0px_50px_rgba(0,0,0,0.3)] xl:[box-shadow:none] transition-[right] duration-300 z-30 text-xl xl:text-base" style={drawerShow ? {right: "0px"} : {right: "-400px"}}>
-            <FaCircleXmark className="xl:hidden text-3xl text-primary absolute left-6 top-6 cursor-pointer" onClick={() => setDrawerShow(false)} />
-            <li>
-              <NavLink to='/' className={({isActive}) => isActive ? "font-bold text-primary" : ""} onClick={() => {setDrawerShow(false); scrollTo(0, 0)}}>Home</NavLink>
-            </li>
-            {/* <li>
-              <NavLink to='/assignments' className={({isActive}) => isActive ? "font-bold text-primary" : ""} onClick={() => {setDrawerShow(false); scrollTo(0, 0)}}>Assignments</NavLink>
-            </li> */}
-            {
-              userLoaded && user && <>
-                <li>
-                  <NavLink to='/project' className={({isActive}) => isActive ? "font-bold text-primary" : ""} onClick={() => {setDrawerShow(false); scrollTo(0, 0)}}>Project Progress</NavLink>
-                </li>
-
-                <li>
-                  <NavLink to='/update' className={({isActive}) => isActive ? "font-bold text-primary" : ""} onClick={() => {setDrawerShow(false); scrollTo(0, 0)}}>Update Project</NavLink>
-                </li>
-                {/* <li>
-                  <NavLink to='/submitted-assignments' className={({isActive}) => isActive ? "font-bold text-primary" : ""} onClick={() => {setDrawerShow(false); scrollTo(0, 0)}}>Submitted Assignments</NavLink>
-                </li>
-                <li>
-                  <NavLink to='/create-assignment' className={({isActive}) => isActive ? "font-bold text-primary" : ""} onClick={() => {setDrawerShow(false); scrollTo(0, 0)}}>Create Assignment</NavLink>
-                </li> */}
-              </>
-            }
-          </ul>
-
-          <div className="flex justify-center items-center gap-4">
-            {
-              userLoaded ? user ? <div className="flex justify-center items-center gap-2">
-                <div className="relative group peer cursor-pointer">
-                  <img className="w-10 h-10 rounded-full select-none" onClick={() => setProfileShow(!profileShow)} src={user?.photoURL} alt="User's Photo" />
-                  <span className="w-8 h-8 bg-white rotate-45 absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 z-10" style={profileShow ? {display: "block"} : {display: "none"}}></span>
+          <div className="lg:hidden">
+            <button onClick={() => setDrawerShow(!drawerShow)} className="text-gray-800 text-2xl">
+              <FaBars />
+            </button>
+          </div>
+          <div className={`fixed inset-0 lg:static lg:flex lg:items-center bg-white lg:bg-transparent transform ${drawerShow ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:transform-none lg:transition-none z-30`}>
+            <button className="lg:hidden absolute top-4 right-4 text-gray-800 text-2xl" onClick={() => setDrawerShow(false)}>
+              <FaBars />
+            </button>
+            {renderNavLinks()}
+            {userLoaded ? (
+              user ? (
+                <div className="ml-4">
+                  {renderUserProfile()}
                 </div>
-                <div className="flex-col justify-center items-center bg-white p-6 rounded-lg absolute top-[calc(100%+1rem)] right-0 w-full max-w-[320px] [box-shadow:0px_10px_40px_5px_rgba(0,0,0,0.3)]" style={profileShow ? {display: "flex"} : {display: "none"}}>
-                  <img className="w-20 h-20 rounded-full mb-4 z-20" src={user?.photoURL} alt="User's Photo" />
-                  <span className="text-[18px] font-medium mb-1">{user?.displayName}</span>
-                  <span className="mb-4">{user?.email}</span>
-                  <button className="btn btn-warning" onClick={() => {handleLogout(), setProfileShow(false)}}>Logout</button>
-                </div>
-                <button className="btn btn-warning hidden sm:inline-flex" onClick={() => {handleLogout(), setProfileShow(false)}}>Logout</button>
-              </div> : <div className="flex justify-center items-center gap-2">
-                <Link to='/login' className="btn btn-primary" onClick={() => scrollTo(0, 0)}>Login</Link>
-                <Link to='/register' className="btn btn-primary btn-outline hidden sm:inline-flex" onClick={() => scrollTo(0, 0)}>Register</Link>
-              </div> : <div className="flex justify-center items-center">
-                <span className="loading loading-spinner loading-md text-primary"></span>
-              </div>
-            }
-            <FaBars className="text-2xl xl:hidden cursor-pointer" onClick={() => setDrawerShow(true)} />
+              ) : (
+                <span className="loading loading-spinner loading-md text-teal-400 ml-4"></span>
+              )
+            ) : null}
           </div>
         </nav>
+        {pathname === '/' && <HeroSection />}
       </div>
-      {
-        pathname === '/' && <HeroSection />
-      }
     </header>
   );
 };

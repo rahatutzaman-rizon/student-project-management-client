@@ -42,7 +42,7 @@ const Banner = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="bg-gradient-to-r from-teal-300 to-sky-300 py-12 px-8 rounded-lg shadow-xl"
+      className="bg-gradient-to-r from-teal-400 to-sky-400 py-12 px-8 rounded-lg shadow-xl"
     >
       <motion.div
         className="flex flex-col items-center mb-8"

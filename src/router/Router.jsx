@@ -6,17 +6,11 @@ import PrivateRouteAlt from "../manageRoute/PrivateRouteAlt";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 
-import CreateAssignment from "../pages/CreateAssignment";
-import MyAssignments from "../pages/MyAssignments";
-import SubmittedAssignments from "../pages/SubmittedAssignments";
+
 import PrivateRoute from "../manageRoute/PrivateRoute";
-import AssignmentDetails from "../pages/AssignmentDetails";
-import UpdateAssignments from "../pages/UpdateAssignments";
+
 import Groups from "../Groups/Groups";
-import GroupPage from "../Groups/GroupPage";
-//import { DashboardLayout } from "../Groups/Dashboard/DashboardLayout";
-//import Dashboard from "../Groups/Dashboard/Dashboard";
-import Move from "../Groups/Dashboard/Move";
+
 import Teacher from "../Groups/Teacher";
 import Project from "../pages/Project";
 import Projects from "../pages/Projects";
@@ -54,26 +48,12 @@ export const router = createBrowserRouter([
         element: <ProjectDetails></ProjectDetails>
       },
 
-      {
-        path: '/assignments/:id',
-        element: <PrivateRoute><AssignmentDetails /></PrivateRoute>
-      },
-      {
-        path: '/create-assignment',
-        element: <PrivateRoute><CreateAssignment /></PrivateRoute>
-      },
-      {
-        path: '/my-assignments',
-        element: <PrivateRoute><MyAssignments /></PrivateRoute>
-      },
-      {
-        path: '/assignments/update/:id',
-        element: <PrivateRoute><UpdateAssignments /></PrivateRoute>
-      },
-      {
-        path: '/submitted-assignments',
-        element: <PrivateRoute><SubmittedAssignments /></PrivateRoute>
-      },   {
+
+
+     
+     
+     
+        {
         path: '/group',
         element: <PrivateRoute><Groups></Groups></PrivateRoute>
       },
@@ -87,17 +67,10 @@ export const router = createBrowserRouter([
         path: '/teacher/:id',
         element: <PrivateRoute><Teacher></Teacher></PrivateRoute>
       },
-      {path: '/group/:id',
-      element: <PrivateRoute><GroupPage></GroupPage></PrivateRoute>,
-      loader:({params})=> fetch(`https://student-project-management-server.vercel.app/member/${params.id}`),
-    },
-
-    {
-      path: '/move/:id',
-      element: <PrivateRoute><Move></Move></PrivateRoute>,
-
-}
      
+
+    
+
       // {
       //   path: '/dashboard',
       //   element: ,

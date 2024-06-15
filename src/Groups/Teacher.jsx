@@ -235,7 +235,7 @@ console.log(res)
       <div className="flex-grow overflow-auto">
         {activeTab === 'description' && (
           <div>
-            <h3 className="text-xl font-bold mb-2 bg-gradient-to-r from-pink-500 to-purple-600 text-transparent bg-clip-text">
+            <h3 className="text-sm font-bold mb-2 bg-gradient-to-r from-pink-500 to-purple-600 text-transparent bg-clip-text">
               Description: {selectedGroup.description}
             </h3>
             <h1 className="text-2xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text">

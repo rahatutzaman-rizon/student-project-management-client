@@ -29,7 +29,7 @@ const HeroSection = () => {
               Student Project Management is an online project based web platform, where people can take part in group study with their friends. They can create, submit, review assignments of each other on this platform.
             </motion.p>
             <motion.a
-              href="/"
+              href="/group"
               className="inline-block bg-white text-purple-600 font-semibold px-6 py-3 rounded-md shadow-md hover:bg-gray-200 transition-colors duration-300"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}

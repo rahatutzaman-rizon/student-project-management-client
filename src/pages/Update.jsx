@@ -8,12 +8,16 @@ function Update() {
   const [emailList, setEmailList] = useState({});
   const componentRef = React.useRef();
 
-  const teachersData = [ { id: 1, name: 'DR. MUHAMMAD SHAHIN UDDIN', designation: 'PROFESSOR', email: 'shahin.mbstu@gmail.com', image: 'https://i.ibb.co/jbdCMcJ/1.jpg', },
-   { id: 2, name: 'DR. SAJJAD WAHEED', designation: 'PROFESSOR', email: 'sajjad@mbstu.ac.bd', image: 'https://i.ibb.co/BwXQmYH/2.jpg', }, 
-   { id: 3, name: 'DR. MONIR MORSHED', designation: 'PROFESSOR', email: 'monirmorshed.ict@mbstu.ac.bd', image: 'https://i.ibb.co/dj6B55y/3.jpg', },
-    { id: 4, name: 'MOHAMMAD BADRUL ALAM MIAH', designation: 'PROFESSOR', email: 'badrul.ict@gmail.com', image: 'https://i.ibb.co/Q6y9ZH4/4.jpg', }, 
-    { id: 5, name: 'DR. MST. NARGIS AKTER', designation: 'PROFESSOR', email: 'nagis_ict@mbstu.ac.bd', image: 'https://i.ibb.co/NtrKLbS/5.jpg', }, 
-    { id: 6, name: 'DR. MD. ABIR HOSSAIN', designation: 'ASSOCIATE PROFESSOR', email: 'abir.hossain@mbstu.ac.bd', image: 'https://i.ibb.co/Xjdxx6d/6.jpg', }, { id: 7, name: 'BIKASH KUMAR PAUL', designation: 'ASSISTANT PROFESSOR', email: 'bikash@mbstu.ac.bd', image: 'https://i.ibb.co/XX9HQsS/7.jpg', }, ];
+  // Mock data for teachers
+  const teachersData = [
+    { id: 1, name: 'DR. MUHAMMAD SHAHIN UDDIN', designation: 'PROFESSOR', email: 'shahin.mbstu@gmail.com', image: 'https://i.ibb.co/jbdCMcJ/1.jpg' },
+    { id: 2, name: 'DR. SAJJAD WAHEED', designation: 'PROFESSOR', email: 'sajjad@mbstu.ac.bd', image: 'https://i.ibb.co/BwXQmYH/2.jpg' },
+    { id: 3, name: 'DR. MONIR MORSHED', designation: 'PROFESSOR', email: 'monirmorshed.ict@mbstu.ac.bd', image: 'https://i.ibb.co/dj6B55y/3.jpg' },
+    { id: 4, name: 'MOHAMMAD BADRUL ALAM MIAH', designation: 'PROFESSOR', email: 'badrul.ict@gmail.com', image: 'https://i.ibb.co/Q6y9ZH4/4.jpg' },
+    { id: 5, name: 'DR. MST. NARGIS AKTER', designation: 'PROFESSOR', email: 'nagis_ict@mbstu.ac.bd', image: 'https://i.ibb.co/NtrKLbS/5.jpg' },
+    { id: 6, name: 'DR. MD. ABIR HOSSAIN', designation: 'ASSOCIATE PROFESSOR', email: 'abir.hossain@mbstu.ac.bd', image: 'https://i.ibb.co/Xjdxx6d/6.jpg' },
+    { id: 7, name: 'BIKASH KUMAR PAUL', designation: 'ASSISTANT PROFESSOR', email: 'bikash@mbstu.ac.bd', image: 'https://i.ibb.co/XX9HQsS/7.jpg' },
+  ];
 
   const onDrop = (acceptedFiles) => {
     const file = acceptedFiles[0];
@@ -59,6 +63,7 @@ function Update() {
 
   return (
     <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold text-center mb-6 text-gray-700">Student Project Progress Management System</h1>
       <div
         {...getRootProps()}
         className="border-2 border-dashed border-gray-400 p-4 rounded-md bg-gradient-to-r from-blue-200 to-pink-200 text-center cursor-pointer"
@@ -135,9 +140,9 @@ function Update() {
                       </div>
                     )}
                   </div>
-                  <div className="p-4 flex">
+                  <div className="p-4">
                     <p className="text-gray-700 font-semibold mb-2">Student List:</p>
-                    <ul className="ml-4">
+                    <ul className="ml-4 list-disc">
                       {students.map((name) => (
                         <li key={name} className="text-gray-600">
                           {name}

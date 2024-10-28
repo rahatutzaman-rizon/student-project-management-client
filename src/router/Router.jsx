@@ -37,15 +37,15 @@ export const router = createBrowserRouter([
       },
       {
         path: '/project',
-        element: <Project></Project>
+        element: <PrivateRoute><Project></Project></PrivateRoute>
       },
       {
         path: '/project/:id',
-        element: <Projects></Projects>
+        element:  <PrivateRoute> <Projects></Projects></PrivateRoute>
       },
       {
         path: '/:team/:id',
-        element: <ProjectDetails></ProjectDetails>
+        element: <PrivateRoute><ProjectDetails></ProjectDetails></PrivateRoute> 
       },
 
 
@@ -71,14 +71,7 @@ export const router = createBrowserRouter([
 
     
 
-      // {
-      //   path: '/dashboard',
-      //   element: ,
-      // children:[
-
-    
-      //   ]
-      // },
+     
     ]
   }
 ])

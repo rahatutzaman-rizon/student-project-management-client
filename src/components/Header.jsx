@@ -1,18 +1,19 @@
 import { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { GlobalContext } from "../context/ContextProvider";
+
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase.config";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../hooks/useAxios";
 
-import { Menu, X, ChevronDown, LogOut } from "lucide-react";
+// Importing icons from react-icons
+import { FiMenu, FiX, FiChevronDown, FiLogOut } from "react-icons/fi";
 
 const Header = () => {
   const { user } = useContext(GlobalContext);
   const [drawerShow, setDrawerShow] = useState(false);
   const [profileShow, setProfileShow] = useState(false);
-
 
   const handleLogout = () => {
     signOut(auth)
@@ -70,7 +71,7 @@ const Header = () => {
             {user?.displayName?.[0] || "U"}
           </div>
         )}
-        <ChevronDown
+        <FiChevronDown
           className={`w-4 h-4 text-gray-600 transition-transform duration-200 ${
             profileShow ? "rotate-180" : ""
           }`}
@@ -104,7 +105,7 @@ const Header = () => {
             onClick={handleLogout}
             className="w-full px-4 py-2 flex items-center gap-2 text-red-600 hover:bg-red-50 transition-colors"
           >
-            <LogOut className="w-4 h-4" />
+            <FiLogOut className="w-4 h-4" />
             <span>Sign Out</span>
           </button>
         </div>
@@ -149,9 +150,9 @@ const Header = () => {
             className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
           >
             {drawerShow ? (
-              <X className="h-6 w-6 text-gray-600" />
+              <FiX className="h-6 w-6 text-gray-600" />
             ) : (
-              <Menu className="h-6 w-6 text-gray-600" />
+              <FiMenu className="h-6 w-6 text-gray-600" />
             )}
           </button>
         </nav>
@@ -179,7 +180,7 @@ const Header = () => {
                       }}
                       className="w-full flex items-center justify-center gap-2 rounded-lg bg-red-50 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-100 transition-colors"
                     >
-                      <LogOut className="w-4 h-4" />
+                      <FiLogOut className="w-4 h-4" />
                       <span>Sign Out</span>
                     </button>
                   )}
@@ -189,7 +190,7 @@ const Header = () => {
           </div>
         )}
       </div>
-     
+    
     </header>
   );
 };

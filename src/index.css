@@ -24,7 +24,7 @@
   @apply !pl-8;
 }
 .react-datepicker__triangle {
-  @apply !-left-[120px]
+  @apply !-left-[120px];
 }
 
 .react-pdf__Page {

@@ -28,10 +28,10 @@ const Banner = () => {
         {stats.map((stat, index) => (
           <motion.div
             key={index}
-            className="bg-blue-300 rounded-lg p-6 shadow-md transform transition duration-300 hover:scale-105"
+            className=" bg-[#0074D9] rounded-lg p-6 shadow-md transform transition duration-300 hover:scale-105"
           >
-            <h3 className="text-lg font-semibold mb-2 text-black">{stat.label}</h3>
-            <p className="text-5xl font-bold text-[#001f3f]">
+            <h3 className="text-lg font-semibold mb-2 text-white">{stat.label}</h3>
+            <p className="text-5xl font-bold text-white">
               <CountUp end={stat.value} duration={2.5} />
             </p>
           </motion.div>

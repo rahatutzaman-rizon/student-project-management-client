@@ -1,22 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
-import ReactToPrint from 'react-to-print';
+import { 
+  FileUp, 
+  Download, 
+  Printer, 
+  UserPlus, 
+  Save, 
+  X, 
+  Check 
+} from 'lucide-react';
 
 function Update() {
   const [excelData, setExcelData] = useState(null);
   const [emailList, setEmailList] = useState({});
-  const componentRef = React.useRef();
+  const [teacherList, setTeacherList] = useState([]);
+  const [selectedTeachers, setSelectedTeachers] = useState({});
+  const [unassignedStudents, setUnassignedStudents] = useState([]);
+  const componentRef = useRef(null);
 
-  // Mock data for teachers
-  const teachersData = [
-    { id: 1, name: 'DR. MUHAMMAD SHAHIN UDDIN', designation: 'PROFESSOR', email: 'shahin.mbstu@gmail.com', image: 'https://i.ibb.co/jbdCMcJ/1.jpg' },
-    { id: 2, name: 'DR. SAJJAD WAHEED', designation: 'PROFESSOR', email: 'sajjad@mbstu.ac.bd', image: 'https://i.ibb.co/BwXQmYH/2.jpg' },
-    { id: 3, name: 'DR. MONIR MORSHED', designation: 'PROFESSOR', email: 'monirmorshed.ict@mbstu.ac.bd', image: 'https://i.ibb.co/dj6B55y/3.jpg' },
-    { id: 4, name: 'MOHAMMAD BADRUL ALAM MIAH', designation: 'PROFESSOR', email: 'badrul.ict@gmail.com', image: 'https://i.ibb.co/Q6y9ZH4/4.jpg' },
-    { id: 5, name: 'DR. MST. NARGIS AKTER', designation: 'PROFESSOR', email: 'nagis_ict@mbstu.ac.bd', image: 'https://i.ibb.co/NtrKLbS/5.jpg' },
-    { id: 6, name: 'DR. MD. ABIR HOSSAIN', designation: 'ASSOCIATE PROFESSOR', email: 'abir.hossain@mbstu.ac.bd', image: 'https://i.ibb.co/Xjdxx6d/6.jpg' },
-    { id: 7, name: 'BIKASH KUMAR PAUL', designation: 'ASSISTANT PROFESSOR', email: 'bikash@mbstu.ac.bd', image: 'https://i.ibb.co/XX9HQsS/7.jpg' },
+  // Predefined teachers with more details
+  const predefinedTeachers = [
+    { 
+      id: 1, 
+      name: 'Dr. Muhammad Shahin Uddin', 
+      designation: 'Professor', 
+      email: 'shahin.mbstu@gmail.com', 
+      image: 'https://i.ibb.co/jbdCMcJ/1.jpg',
+      expertise: 'Machine Learning',
+      maxStudents: 6
+    },
+    { 
+      id: 2, 
+      name: 'Dr. Sajjad Waheed', 
+      designation: 'Professor', 
+      email: 'sajjad@mbstu.ac.bd', 
+      image: 'https://i.ibb.co/BwXQmYH/2.jpg',
+      expertise: 'Network Security',
+      maxStudents: 5
+    },
+    { 
+      id: 3, 
+      name: 'Dr. Monir Morshed', 
+      designation: 'Professor', 
+      email: 'monirmorshed.ict@mbstu.ac.bd', 
+      image: 'https://i.ibb.co/dj6B55y/3.jpg',
+      expertise: 'Cloud Computing',
+      maxStudents: 4
+    },
+    { 
+      id: 4, 
+      name: 'Mohammad Badrul Alam Miah', 
+      designation: 'Professor', 
+      email: 'badrul.ict@gmail.com', 
+      image: 'https://i.ibb.co/Q6y9ZH4/4.jpg',
+      expertise: 'Artificial Intelligence',
+      maxStudents: 5
+    }
   ];
 
   const onDrop = (acceptedFiles) => {
@@ -28,133 +68,222 @@ function Update() {
       const sheetName = workbook.SheetNames[0];
       const sheet = workbook.Sheets[sheetName];
       const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+      
       setExcelData(jsonData);
-
-      // Group students by teacher's email
-      const emailListData = {};
-      jsonData.slice(1).forEach((row) => {
-        const email = row[4]; // Assuming the teacher's email is in the fifth column (index 4)
-        const name = row[0]; // Assuming the student's name is in the first column (index 0)
-        const teacher = row[2]; // Assuming the teacher's name is in the third column (index 2)
-        const teacherData = teachersData.find((t) => t.email === email);
-        if (emailListData[email]) {
-          emailListData[email].students.push(name);
-        } else {
-          emailListData[email] = {
-            teacher: teacher,
-            students: [name],
-            teacherData: teacherData || null,
-          };
-        }
-      });
-      setEmailList(emailListData);
+      
+      // Prepare unassigned students
+      const students = jsonData.slice(1).map(row => ({
+        name: row[0],
+        projectTopic: row[1],
+        skillSet: row[3]
+      }));
+      
+      setUnassignedStudents(students);
     };
     reader.readAsArrayBuffer(file);
   };
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps } = useDropzone({ 
+    onDrop,
+    accept: {
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
+      'application/vnd.ms-excel': ['.xls']
+    }
+  });
+
+  const assignStudent = (student, teacherId) => {
+    const teacher = predefinedTeachers.find(t => t.id === teacherId);
+    
+    // Create a copy of selectedTeachers
+    const updatedSelectedTeachers = {...selectedTeachers};
+    
+    if (!updatedSelectedTeachers[teacherId]) {
+      updatedSelectedTeachers[teacherId] = { students: [], teacherInfo: teacher };
+    }
+    
+    // Check if teacher hasn't reached max student limit
+    if (updatedSelectedTeachers[teacherId].students.length < teacher.maxStudents) {
+      updatedSelectedTeachers[teacherId].students.push(student);
+      
+      // Remove student from unassigned list
+      const updatedUnassignedStudents = unassignedStudents.filter(
+        s => s.name !== student.name
+      );
+      
+      setSelectedTeachers(updatedSelectedTeachers);
+      setUnassignedStudents(updatedUnassignedStudents);
+    } else {
+      alert(`${teacher.name} has reached the maximum student limit.`);
+    }
+  };
+
+  const removeStudentAssignment = (studentName, teacherId) => {
+    const updatedSelectedTeachers = {...selectedTeachers};
+    
+    // Find and remove the student
+    const removedStudent = updatedSelectedTeachers[teacherId].students.find(
+      s => s.name === studentName
+    );
+    
+    updatedSelectedTeachers[teacherId].students = updatedSelectedTeachers[teacherId].students.filter(
+      s => s.name !== studentName
+    );
+    
+    // Add student back to unassigned list
+    setUnassignedStudents([...unassignedStudents, removedStudent]);
+    setSelectedTeachers(updatedSelectedTeachers);
+  };
 
   const handleDownload = () => {
-    const worksheet = XLSX.utils.json_to_sheet(excelData.slice(1));
+    // Create a new workbook with assigned students
+    const assignmentData = Object.entries(selectedTeachers).flatMap(
+      ([teacherId, { students, teacherInfo }]) => 
+        students.map(student => ({
+          'Teacher Name': teacherInfo.name,
+          'Teacher Email': teacherInfo.email,
+          'Student Name': student.name,
+          'Project Topic': student.projectTopic,
+          'Skill Set': student.skillSet
+        }))
+    );
+
+    const worksheet = XLSX.utils.json_to_sheet(assignmentData);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-    XLSX.writeFile(workbook, 'data.xlsx');
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Student Assignments');
+    XLSX.writeFile(workbook, 'student_assignments.xlsx');
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold text-center mb-6 text-gray-700">Student Project Progress Management System</h1>
-      <div
-        {...getRootProps()}
-        className="border-2 border-dashed border-gray-400 p-4 rounded-md bg-gradient-to-r from-blue-200 to-pink-200 text-center cursor-pointer"
-      >
-        <input {...getInputProps()} />
-        <p className="text-gray-600 font-semibold">Drag 'n' drop an Excel file here, or click to select one</p>
-      </div>
+    <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
+      <div className="bg-white shadow-xl rounded-lg p-8">
+        <h1 className="text-4xl font-extrabold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+          Student Project Management System
+        </h1>
 
-      <div className="mt-8 flex justify-end">
-        <ReactToPrint
-          trigger={() => (
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">
-              Print
-            </button>
-          )}
-          content={() => componentRef.current}
-        />
-        <button
-          onClick={handleDownload}
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+        {/* File Upload Section */}
+        <div 
+          {...getRootProps()}
+          className="border-2 border-dashed border-blue-400 p-6 rounded-lg text-center 
+                     hover:bg-blue-50 transition duration-300 cursor-pointer mb-8"
         >
-          Download Excel
-        </button>
-      </div>
+          <input {...getInputProps()} />
+          <div className="flex justify-center mb-4">
+            <FileUp size={48} className="text-blue-500" />
+          </div>
+          <p className="text-gray-600 font-semibold">
+            Drag & drop Excel file or click to select
+          </p>
+          <p className="text-sm text-gray-500 mt-2">
+            (.xls or .xlsx files supported)
+          </p>
+        </div>
 
-      <div ref={componentRef}>
-        {excelData && (
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold mb-4 text-gray-700">Excel Data</h2>
-            <table className="table-auto w-full border-collapse border-gray-400">
-              <thead>
-                <tr className="bg-gradient-to-r from-blue-200 to-pink-200">
-                  {excelData[0].map((cell, index) => (
-                    <th key={index} className="px-4 py-2 border font-semibold text-gray-600">
-                      {cell}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {excelData.slice(1).map((row, rowIndex) => (
-                  <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-gray-100' : 'bg-white'}>
-                    {row.map((cell, cellIndex) => (
-                      <td key={cellIndex} className="px-4 py-2 border text-gray-700">
-                        {cell}
-                      </td>
+        {/* Unassigned Students Section */}
+        {unassignedStudents.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold mb-4 text-gray-700">
+              Unassigned Students
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {unassignedStudents.map((student, index) => (
+                <div 
+                  key={index} 
+                  className="bg-white border rounded-lg p-4 shadow hover:shadow-md transition"
+                >
+                  <h3 className="font-semibold text-lg mb-2">{student.name}</h3>
+                  <p className="text-sm text-gray-600 mb-2">
+                    <strong>Project:</strong> {student.projectTopic}
+                  </p>
+                  <p className="text-sm text-gray-500 mb-4">
+                    <strong>Skills:</strong> {student.skillSet}
+                  </p>
+                  <div className="flex space-x-2">
+                    {predefinedTeachers.map(teacher => (
+                      <button 
+                        key={teacher.id} 
+                        onClick={() => assignStudent(student, teacher.id)}
+                        className="bg-green-500 text-white px-3 py-1 rounded-full text-xs 
+                                   hover:bg-green-600 transition flex items-center"
+                      >
+                        <UserPlus size={12} className="mr-1" /> {teacher.name}
+                      </button>
                     ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
-        {Object.keys(emailList).length > 0 && (
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold mb-4 text-gray-700">Student List by Teacher's Email</h2>
-            <ul>
-              {Object.entries(emailList).map(([email, { teacher, students, teacherData }]) => (
-                <li key={email} className="mb-4 bg-white rounded-lg shadow-md overflow-hidden">
-                  <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-4 rounded-t-lg">
-                    <h3 className="text-lg font-semibold mb-2">{teacher}</h3>
-                    <p className="text-sm">{email}</p>
-                    {teacherData && (
-                      <div className="mt-4 flex items-center">
-                        <img
-                          src={teacherData.image}
-                          alt={teacherData.name}
-                          className="w-16 h-16 rounded-full mr-4 border-2 border-white"
-                        />
-                        <div>
-                          <p className="text-sm font-semibold">{teacherData.name}</p>
-                          <p className="text-xs">{teacherData.designation}</p>
-                        </div>
+
+        {/* Assigned Students Section */}
+        {Object.keys(selectedTeachers).length > 0 && (
+          <div>
+            <h2 className="text-2xl font-bold mb-6 text-gray-700">
+              Student Assignments
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Object.entries(selectedTeachers).map(([teacherId, { students, teacherInfo }]) => (
+                <div 
+                  key={teacherId} 
+                  className="bg-gradient-to-br from-blue-100 to-purple-100 
+                             rounded-lg overflow-hidden shadow-lg"
+                >
+                  <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-4 text-white">
+                    <div className="flex items-center">
+                      <img 
+                        src={teacherInfo.image} 
+                        alt={teacherInfo.name} 
+                        className="w-16 h-16 rounded-full mr-4 border-2 border-white"
+                      />
+                      <div>
+                        <h3 className="text-lg font-bold">{teacherInfo.name}</h3>
+                        <p className="text-sm">{teacherInfo.designation}</p>
                       </div>
-                    )}
+                    </div>
                   </div>
                   <div className="p-4">
-                    <p className="text-gray-700 font-semibold mb-2">Student List:</p>
-                    <ul className="ml-4 list-disc">
-                      {students.map((name) => (
-                        <li key={name} className="text-gray-600">
-                          {name}
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="flex justify-between items-center mb-4">
+                      <span className="text-sm text-gray-600">
+                        {students.length} / {teacherInfo.maxStudents} Students
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        {teacherInfo.expertise}
+                      </span>
+                    </div>
+                    {students.map((student, index) => (
+                      <div 
+                        key={index} 
+                        className="bg-white rounded-lg p-3 mb-2 shadow flex justify-between items-center"
+                      >
+                        <div>
+                          <h4 className="font-semibold">{student.name}</h4>
+                          <p className="text-xs text-gray-500">{student.projectTopic}</p>
+                        </div>
+                        <button 
+                          onClick={() => removeStudentAssignment(student.name, teacherId)}
+                          className="text-red-500 hover:bg-red-50 rounded-full p-1"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    ))}
                   </div>
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         )}
+
+        {/* Action Buttons */}
+        <div className="mt-8 flex justify-end space-x-4">
+          <button 
+            onClick={handleDownload}
+            className="flex items-center bg-green-500 text-white px-4 py-2 
+                       rounded-lg hover:bg-green-600 transition"
+          >
+            <Download size={16} className="mr-2" /> Download Assignments
+          </button>
+        </div>
       </div>
     </div>
   );

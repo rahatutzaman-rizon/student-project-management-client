@@ -1,148 +1,132 @@
-
+import React from 'react';
 import { motion } from 'framer-motion';
 
 const FeaturesSection = () => {
   const features = [
     {
       title: "Collaborative Environment",
-      description: "Foster teamwork and collaboration among students by providing a dedicated space for project management and real-time interactions.",
+      description: "Foster teamwork through integrated project management and real-time communication tools.",
       icon: (
-        <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 14h-3a4 4 0 00-4 4v3" />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 1 12 12.75a5.995 5.995 0 0 1-5.058-2.928m0 0a5.969 5.969 0 0 1-.941 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
         </svg>
       ),
-      gradient: "from-blue-600 to-indigo-600",
-      shadowColor: "shadow-blue-500/20",
-      delay: 0.1
+      gradient: "from-blue-600 to-blue-800"
     },
     {
-      title: "Organized Project Tracking",
-      description: "Keep track of project assignments, submissions, and reviews in a centralized and organized manner with real-time updates.",
+      title: "Smart Project Tracking",
+      description: "Streamline project management with real-time updates and intuitive progress tracking.",
       icon: (
-        <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
         </svg>
       ),
-      gradient: "from-emerald-600 to-teal-600",
-      shadowColor: "shadow-emerald-500/20",
-      delay: 0.2
+      gradient: "from-green-600 to-green-800"
     },
     {
-      title: "Student Empowerment",
-      description: "Empower students with a personalized portal to manage their projects, submit work, and track progress effectively.",
+      title: "Advanced Analytics",
+      description: "Gain insights with comprehensive performance metrics and visualization tools.",
       icon: (
-        <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.5-1.5 1-3m-7.5-3h7.5M6 10.5l2-1.5m0 0 3-2.25m-3 2.25v4.5m5.25-4.5 3 2.25m0 0 3 1.5m-3-1.5v4.5" />
         </svg>
       ),
-      gradient: "from-purple-600 to-indigo-600",
-      shadowColor: "shadow-purple-500/20",
-      delay: 0.3
+      gradient: "from-purple-600 to-purple-800"
     },
     {
-      title: "Instructor Dashboard",
-      description: "Comprehensive dashboard for instructors to oversee assignments, track submissions, and provide timely feedback.",
+      title: "Secure Communication",
+      description: "Enterprise-grade security with encrypted messaging and file sharing.",
       icon: (
-        <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
         </svg>
       ),
-      gradient: "from-pink-600 to-rose-600",
-      shadowColor: "shadow-pink-500/20",
-      delay: 0.4
+      gradient: "from-red-600 to-red-800"
     },
     {
-      title: "Efficient Time Management",
-      description: "Advanced tools for time tracking, deadline management, and automated reminders to keep projects on schedule.",
+      title: "Time Management",
+      description: "Automated deadline tracking and personalized productivity insights.",
       icon: (
-        <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
         </svg>
       ),
-      gradient: "from-amber-500 to-orange-600",
-      shadowColor: "shadow-amber-500/20",
-      delay: 0.5
+      gradient: "from-orange-600 to-orange-800"
     },
     {
-      title: "Secure and Transparent",
-      description: "Enterprise-grade security measures ensuring data protection while maintaining complete transparency in operations.",
+      title: "Feedback Engine",
+      description: "Comprehensive feedback system with automated and peer review mechanisms.",
       icon: (
-        <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.17 48.17 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
         </svg>
       ),
-      gradient: "from-cyan-600 to-blue-600",
-      shadowColor: "shadow-cyan-500/20",
-      delay: 0.6
+      gradient: "from-teal-600 to-teal-800"
     }
   ];
 
   return (
-    <section className="py-20 bg-blue-200 mb-[-80px]">
-      {/* Background Decorations */}
-      <div className="absolute inset-0 grid grid-cols-2 -space-x-52 opacity-40 dark:opacity-20">
-        <div className="blur-[106px] h-56 bg-gradient-to-br from-primary to-purple-400 dark:from-blue-700"></div>
-        <div className="blur-[106px] h-32 bg-gradient-to-r from-cyan-400 to-sky-300 dark:to-indigo-600"></div>
-      </div>
+    <section className="bg-gray-900  py-12 mb-[-64px]">
+      <div className=" mx-auto px-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-2"
+        >
+          <h2 className="text-5xl font-bold mb-4 text-white">
+            Elevate Your Project Management
+          </h2>
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-6">
+            Discover a comprehensive platform designed to streamline collaboration, tracking, and success.
+          </p>
+        </motion.div>
 
-      <div className="container mx-auto px-4">
-        <div className="relative">
-          {/* Header Section */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl mx-auto text-center mb-20"
-          >
-            <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-              Revolutionize Your Student Projects
-            </h2>
-            <p className="text-lg text-gray-600">
-              Experience a new era of project management designed specifically for modern educational institutions.
-              Our platform combines powerful features with an intuitive interface.
-            </p>
-          </motion.div>
-
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: feature.delay }}
-                className="relative group"
-              >
-                <div className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${feature.gradient} opacity-0 group-hover:opacity-100 blur-xl transition-all duration-500 ${feature.shadowColor}`}></div>
-                <div className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
-                  {/* Icon Container */}
-                  <div className={`w-14 h-14 rounded-lg bg-gradient-to-r ${feature.gradient} p-3 text-white mb-6`}>
-                    {feature.icon}
-                  </div>
-
-                  {/* Content */}
-                  <h3 className="text-xl font-semibold mb-4 text-gray-900">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {feature.description}
-                  </p>
-
-                  {/* Hover Effect Arrow */}
-                  <div className="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300">
-                    <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map((feature, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ 
+                duration: 0.4, 
+                delay: index * 0.1 
+              }}
+              className="group"
+            >
+              <div className={`
+                bg-gradient-to-br ${feature.gradient}
+                rounded-lg p-6 
+                transform transition-all duration-300 
+                hover:scale-105 hover:shadow-2xl
+                text-white
+                border border-opacity-20 border-white
+              `}>
+                <div className={`
+                  w-16 h-16 mb-4 
+                  bg-white bg-opacity-10 
+                  rounded-full flex items-center justify-center
+                  group-hover:rotate-6
+                  transition-transform
+                `}>
+                  {React.cloneElement(feature.icon, {
+                    className: "w-10 h-10 text-white"
+                  })}
                 </div>
-              </motion.div>
-            ))}
-          </div>
+                <h3 className="text-xl font-semibold mb-3">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-200 opacity-80">
+                  {feature.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
   );
 };
 
-export default FeaturesSection;
+export default FeaturesSection

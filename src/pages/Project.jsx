@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Award, Mail, User } from 'lucide-react';
 
 const Project = () => {
   const [teachers, setTeachers] = useState([]);
-  const [hoveredTeacher, setHoveredTeacher] = useState(null);
 
   useEffect(() => {
     // JSON data
@@ -16,7 +14,6 @@ const Project = () => {
         "department": "ICT",
         "email": "shahin.mbstu@gmail.com",
         "image": "https://i.ibb.co/jbdCMcJ/1.jpg",
-        "expertise": ["Machine Learning", "Computer Networks", "Data Science"]
       },
       {
         "id": 2,
@@ -25,7 +22,6 @@ const Project = () => {
         "department": "ICT",
         "email":"sajjad@mbstu.ac.bd",
         "image": "https://i.ibb.co/BwXQmYH/2.jpg",
-        "expertise": ["Artificial Intelligence", "Software Engineering", "Cybersecurity"]
       },
       {
         "id": 3,
@@ -34,7 +30,6 @@ const Project = () => {
         "department": "ICT",
         "email": "monirmorshed.ict@mbstu.ac.bd",
         "image": "https://i.ibb.co/dj6B55y/3.jpg",
-        "expertise": ["Cloud Computing", "Big Data", "Network Security"]
       },
       {
         "id": 4,
@@ -43,7 +38,6 @@ const Project = () => {
         "department": "ICT",
         "email": "badrul.ict@gmail.com",
         "image": "https://i.ibb.co/Q6y9ZH4/4.jpg",
-        "expertise": ["Software Development", "Blockchain", "IoT"]
       },
       {
         "id": 5,
@@ -52,7 +46,6 @@ const Project = () => {
         "department": "ICT",
         "email": "nagis_ict@mbstu.ac.bd", 
         "image": "https://i.ibb.co/NtrKLbS/5.jpg",
-        "expertise": ["Data Mining", "Machine Learning", "AI Ethics"]
       },
       {
         "id": 6,
@@ -61,7 +54,6 @@ const Project = () => {
         "department": "ICT",
         "email":"abir.hossain@mbstu.ac.bd",
         "image": "https://i.ibb.co/Xjdxx6d/6.jpg",
-        "expertise": ["Computer Vision", "Deep Learning", "Image Processing"]
       },
       {
         "id": 7,
@@ -70,7 +62,6 @@ const Project = () => {
         "department": "ICT",
         "email":"bikash@mbstu.ac.bd",
         "image": "https://i.ibb.co/XX9HQsS/7.jpg",
-        "expertise": ["Web Technologies", "Mobile App Development", "UX Design"]
       }
     ];
 
@@ -78,72 +69,59 @@ const Project = () => {
   }, []);
 
   return (
-    <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div className="bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-            Faculty <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">Experts</span>
+          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl mb-4">
+            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Distinguished</span> Faculty
           </h1>
-          <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:text-2xl md:mt-5">
-            Meet our distinguished professors who are leaders in technology and innovation
+          <p className="max-w-2xl mx-auto text-xl text-gray-600">
+            Dedicated professionals shaping the future of technology and innovation
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
           {teachers.map((teacher) => (
             <div 
               key={teacher.id}
-              className="relative transform transition-all duration-300 hover:scale-105"
-              onMouseEnter={() => setHoveredTeacher(teacher.id)}
-              onMouseLeave={() => setHoveredTeacher(null)}
+              className="group"
             >
-              <div className="bg-white shadow-xl rounded-2xl overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-indigo-500 opacity-0 hover:opacity-20 transition-opacity duration-300"></div>
-                
+              <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden transform hover:-translate-y-2">
                 <div className="relative h-64 overflow-hidden">
                   <img
                     src={teacher.image}
                     alt={teacher.name}
-                    className="w-full h-full object-cover transform transition-transform duration-300 hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50"></div>
                 </div>
 
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 truncate">
+                <div className="p-6 text-center">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                     {teacher.name}
                   </h3>
+                  <br />
 
-                  <div className="flex items-center text-gray-600 mb-2">
-                    <Award className="w-5 h-5 mr-2 text-purple-600" />
-                    <span className="text-sm font-medium">{teacher.designation}</span>
+                  <div className="text-sm text-gray-600 mb-4">
+                    <p className="font-medium text-gray-800">{teacher.designation}</p>
+                    <p className="text-black-500 text-lg">{teacher.department}</p>
                   </div>
 
-                  <div className="flex items-center text-gray-600 mb-4">
-                    <Mail className="w-5 h-5 mr-2 text-indigo-600" />
-                    <span className="text-sm truncate">{teacher.email}</span>
+                  <div className="mb-4 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                    </svg>
+                    <span className="text-sm text-gray-600 truncate max-w-[200px]">
+                      demo@email.com
+                    </span>
                   </div>
-
-                  {hoveredTeacher === teacher.id && (
-                    <div className="mt-4">
-                      <h4 className="text-sm font-semibold text-gray-700 mb-2">Expertise:</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {teacher.expertise.map((skill) => (
-                          <span 
-                            key={skill} 
-                            className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full"
-                          >
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
 
                   <Link
                     to={`/project/${teacher.id}`}
-                    className="mt-4 w-full block text-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-colors duration-300"
+                    className="w-full inline-block bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors duration-300 text-sm"
                   >
-                    View Full Profile
+                    View Profile
                   </Link>
                 </div>
               </div>

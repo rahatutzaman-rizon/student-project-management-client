@@ -31,7 +31,7 @@ const Header = () => {
     { path: '/', label: 'Home' },
     { path: '/project', label: 'Teacher' },
     { path: '/group', label: 'Student' },
-    { path: '/update', label: 'Excel' },
+    { path: '/update', label: 'Assign' },
   ];
 
   const renderNavLinks = () => (

@@ -1,8 +1,7 @@
-import { Card } from 'flowbite-react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const Groups = () => {
+const TeachersInfo = () => {
   const [teachers, setTeachers] = useState([]);
 
   useEffect(() => {
@@ -63,36 +62,40 @@ const Groups = () => {
   }, []);
 
   return (
-    <div className="container mx-auto py-8 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 min-h-screen">
-      <h1 className="text-4xl font-bold mb-8 text-center text-white">Teachers Information</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
-        {teachers.map((teacher) => (
-          <div key={teacher.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-            <Card imgAlt={teacher.name} className="h-full">
-              <div className="relative h-56">
+    <div className="min-h-screen bg-gradient-to-br from-[#001f3f] to-[#0074D9] py-12 px-4 sm:px-6 lg:px-8 mb-[-64px] ">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-extrabold text-center text-white mb-2">Group Public Acess  Information</h1>
+        <p className="text-xl text-center text-blue-200 mb-8">This information is publicly accessible for all students</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {teachers.map((teacher) => (
+            <div key={teacher.id} className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-500 hover:scale-105">
+              <div className="relative h-64">
                 <img src={teacher.image} alt={teacher.name} className="object-cover w-full h-full" />
+                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end">
+                  <div className="p-4 w-full">
+                    <h2 className="text-xl font-bold text-white truncate">{teacher.name}</h2>
+                    <p className="text-sm text-blue-200">{teacher.designation}</p>
+                  </div>
+                </div>
               </div>
               <div className="p-4">
-                <h5 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 mb-2">
-                  {teacher.name}
-                </h5>
-                <p className="text-lg font-semibold text-yellow-600 mb-2">{teacher.designation}</p>
-                <h6 className="text-blue-700 mb-4">
-                  <span className="font-bold text-teal-600">Email:</span> {teacher.email}
-                </h6>
+                <p className="text-gray-600 mb-2">
+                  <span className="font-semibold text-gray-800">Email:</span> email@mbstu.com
+                </p>
                 <Link
                   to={`/teacher/${teacher.id}`}
-                  className="inline-block bg-teal-400 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-300 transition-colors duration-300"
+                  className="block w-full text-center bg-sky-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-300"
                 >
-                  View Details
+                  View Details Group
                 </Link>
               </div>
-            </Card>
-          </div>
-        ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
-export default Groups;
+export default TeachersInfo;
+

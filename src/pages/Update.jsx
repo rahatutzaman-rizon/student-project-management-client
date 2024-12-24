@@ -1,211 +1,115 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
-import { 
-  FileUp, 
-  Download, 
-  Printer, 
-  UserPlus, 
-  Save, 
-  X, 
-  Check 
-} from 'lucide-react';
+import { FileUp, Download, X } from 'lucide-react';
 
-function Update() {
-  const [excelData, setExcelData] = useState(null);
-  const [emailList, setEmailList] = useState({});
-  const [teacherList, setTeacherList] = useState([]);
-  const [selectedTeachers, setSelectedTeachers] = useState({});
-  const [unassignedStudents, setUnassignedStudents] = useState([]);
-  const componentRef = useRef(null);
+const StudentProjectManager = () => {
+  const [students, setStudents] = useState([]);
+  const [assignments, setAssignments] = useState({});
 
-  // Predefined teachers with more details
-  const predefinedTeachers = [
-    { 
-      id: 1, 
-      name: 'Dr. Muhammad Shahin Uddin', 
-      designation: 'Professor', 
-      email: 'shahin.mbstu@gmail.com', 
-      image: 'https://i.ibb.co/jbdCMcJ/1.jpg',
-      expertise: 'Machine Learning',
-      maxStudents: 6
+  const teachers = [
+    {
+      id: 1,
+      name: "Dr. Sarah Johnson",
+      designation: "Professor",
+      email: "sarah.johnson@university.edu",
+      maxStudents: 4,
+      expertise: "AI & Machine Learning",
+      image: "/api/placeholder/64/64"
     },
-    { 
-      id: 2, 
-      name: 'Dr. Sajjad Waheed', 
-      designation: 'Professor', 
-      email: 'sajjad@mbstu.ac.bd', 
-      image: 'https://i.ibb.co/BwXQmYH/2.jpg',
-      expertise: 'Network Security',
-      maxStudents: 5
-    },
-    { 
-      id: 3, 
-      name: 'Dr. Monir Morshed', 
-      designation: 'Professor', 
-      email: 'monirmorshed.ict@mbstu.ac.bd', 
-      image: 'https://i.ibb.co/dj6B55y/3.jpg',
-      expertise: 'Cloud Computing',
-      maxStudents: 4
-    },
-    { 
-      id: 4, 
-      name: 'Mohammad Badrul Alam Miah', 
-      designation: 'Professor', 
-      email: 'badrul.ict@gmail.com', 
-      image: 'https://i.ibb.co/Q6y9ZH4/4.jpg',
-      expertise: 'Artificial Intelligence',
-      maxStudents: 5
+    {
+      id: 2,
+      name: "Dr. Michael Chen",
+      designation: "Associate Professor",
+      email: "m.chen@university.edu",
+      maxStudents: 3,
+      expertise: "Web Development",
+      image: "/api/placeholder/64/64"
     }
   ];
 
-  const onDrop = (acceptedFiles) => {
-    const file = acceptedFiles[0];
+  const onDrop = (files) => {
     const reader = new FileReader();
     reader.onload = (e) => {
       const data = new Uint8Array(e.target.result);
       const workbook = XLSX.read(data, { type: 'array' });
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
-      const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-      
-      setExcelData(jsonData);
-      
-      // Prepare unassigned students
-      const students = jsonData.slice(1).map(row => ({
-        name: row[0],
-        projectTopic: row[1],
-        skillSet: row[3]
-      }));
-      
-      setUnassignedStudents(students);
+      const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+      const parsedData = XLSX.utils.sheet_to_json(firstSheet);
+      setStudents(parsedData);
     };
-    reader.readAsArrayBuffer(file);
+    reader.readAsArrayBuffer(files[0]);
   };
 
-  const { getRootProps, getInputProps } = useDropzone({ 
-    onDrop,
+  const { getRootProps, getInputProps } = useDropzone({
     accept: {
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
       'application/vnd.ms-excel': ['.xls']
-    }
+    },
+    onDrop
   });
 
   const assignStudent = (student, teacherId) => {
-    const teacher = predefinedTeachers.find(t => t.id === teacherId);
-    
-    // Create a copy of selectedTeachers
-    const updatedSelectedTeachers = {...selectedTeachers};
-    
-    if (!updatedSelectedTeachers[teacherId]) {
-      updatedSelectedTeachers[teacherId] = { students: [], teacherInfo: teacher };
-    }
-    
-    // Check if teacher hasn't reached max student limit
-    if (updatedSelectedTeachers[teacherId].students.length < teacher.maxStudents) {
-      updatedSelectedTeachers[teacherId].students.push(student);
-      
-      // Remove student from unassigned list
-      const updatedUnassignedStudents = unassignedStudents.filter(
-        s => s.name !== student.name
-      );
-      
-      setSelectedTeachers(updatedSelectedTeachers);
-      setUnassignedStudents(updatedUnassignedStudents);
-    } else {
-      alert(`${teacher.name} has reached the maximum student limit.`);
-    }
+    setAssignments(prev => ({
+      ...prev,
+      [teacherId]: [...(prev[teacherId] || []), student]
+    }));
+    setStudents(prev => prev.filter(s => s.id !== student.id));
   };
 
-  const removeStudentAssignment = (studentName, teacherId) => {
-    const updatedSelectedTeachers = {...selectedTeachers};
-    
-    // Find and remove the student
-    const removedStudent = updatedSelectedTeachers[teacherId].students.find(
-      s => s.name === studentName
-    );
-    
-    updatedSelectedTeachers[teacherId].students = updatedSelectedTeachers[teacherId].students.filter(
-      s => s.name !== studentName
-    );
-    
-    // Add student back to unassigned list
-    setUnassignedStudents([...unassignedStudents, removedStudent]);
-    setSelectedTeachers(updatedSelectedTeachers);
+  const unassignStudent = (student, teacherId) => {
+    setAssignments(prev => ({
+      ...prev,
+      [teacherId]: prev[teacherId].filter(s => s.id !== student.id)
+    }));
+    setStudents(prev => [...prev, student]);
   };
 
-  const handleDownload = () => {
-    // Create a new workbook with assigned students
-    const assignmentData = Object.entries(selectedTeachers).flatMap(
-      ([teacherId, { students, teacherInfo }]) => 
-        students.map(student => ({
-          'Teacher Name': teacherInfo.name,
-          'Teacher Email': teacherInfo.email,
-          'Student Name': student.name,
-          'Project Topic': student.projectTopic,
-          'Skill Set': student.skillSet
-        }))
-    );
+  const downloadAssignments = () => {
+    const data = Object.entries(assignments).flatMap(([teacherId, students]) => {
+      const teacher = teachers.find(t => t.id === parseInt(teacherId));
+      return students.map(student => ({
+        'Teacher': teacher.name,
+        'Student': student.name,
+        'Project': student.project,
+        'Email': student.email
+      }));
+    });
 
-    const worksheet = XLSX.utils.json_to_sheet(assignmentData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Student Assignments');
-    XLSX.writeFile(workbook, 'student_assignments.xlsx');
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Assignments');
+    XLSX.writeFile(wb, 'project_assignments.xlsx');
   };
 
   return (
-    <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
-      <div className="bg-white shadow-xl rounded-lg p-8">
-        <h1 className="text-4xl font-extrabold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-          Student Project Management System
+    <div className="min-h-screen bg-gray-50 p-8">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
+          Student Project Assignment System
         </h1>
 
-        {/* File Upload Section */}
-        <div 
-          {...getRootProps()}
-          className="border-2 border-dashed border-blue-400 p-6 rounded-lg text-center 
-                     hover:bg-blue-50 transition duration-300 cursor-pointer mb-8"
-        >
+        <div {...getRootProps()} className="border-2 border-dashed border-blue-300 rounded-lg p-8 text-center mb-8 cursor-pointer hover:bg-blue-50 transition">
           <input {...getInputProps()} />
-          <div className="flex justify-center mb-4">
-            <FileUp size={48} className="text-blue-500" />
-          </div>
-          <p className="text-gray-600 font-semibold">
-            Drag & drop Excel file or click to select
-          </p>
-          <p className="text-sm text-gray-500 mt-2">
-            (.xls or .xlsx files supported)
-          </p>
+          <FileUp className="mx-auto h-12 w-12 text-blue-500 mb-4" />
+          <p className="text-gray-600">Drop Excel file here or click to upload</p>
         </div>
 
-        {/* Unassigned Students Section */}
-        {unassignedStudents.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-gray-700">
-              Unassigned Students
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {unassignedStudents.map((student, index) => (
-                <div 
-                  key={index} 
-                  className="bg-white border rounded-lg p-4 shadow hover:shadow-md transition"
-                >
-                  <h3 className="font-semibold text-lg mb-2">{student.name}</h3>
-                  <p className="text-sm text-gray-600 mb-2">
-                    <strong>Project:</strong> {student.projectTopic}
-                  </p>
-                  <p className="text-sm text-gray-500 mb-4">
-                    <strong>Skills:</strong> {student.skillSet}
-                  </p>
-                  <div className="flex space-x-2">
-                    {predefinedTeachers.map(teacher => (
-                      <button 
-                        key={teacher.id} 
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Unassigned Students</h2>
+            <div className="space-y-4">
+              {students.map(student => (
+                <div key={student.id} className="bg-white p-4 rounded-lg shadow">
+                  <h3 className="font-medium">{student.name}</h3>
+                  <p className="text-sm text-gray-500">{student.project}</p>
+                  <div className="mt-2 flex gap-2">
+                    {teachers.map(teacher => (
+                      <button
+                        key={teacher.id}
                         onClick={() => assignStudent(student, teacher.id)}
-                        className="bg-green-500 text-white px-3 py-1 rounded-full text-xs 
-                                   hover:bg-green-600 transition flex items-center"
+                        className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
                       >
-                        <UserPlus size={12} className="mr-1" /> {teacher.name}
+                        Assign to {teacher.name}
                       </button>
                     ))}
                   </div>
@@ -213,80 +117,48 @@ function Update() {
               ))}
             </div>
           </div>
-        )}
 
-        {/* Assigned Students Section */}
-        {Object.keys(selectedTeachers).length > 0 && (
           <div>
-            <h2 className="text-2xl font-bold mb-6 text-gray-700">
-              Student Assignments
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Object.entries(selectedTeachers).map(([teacherId, { students, teacherInfo }]) => (
-                <div 
-                  key={teacherId} 
-                  className="bg-gradient-to-br from-blue-100 to-purple-100 
-                             rounded-lg overflow-hidden shadow-lg"
-                >
-                  <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-4 text-white">
-                    <div className="flex items-center">
-                      <img 
-                        src={teacherInfo.image} 
-                        alt={teacherInfo.name} 
-                        className="w-16 h-16 rounded-full mr-4 border-2 border-white"
-                      />
-                      <div>
-                        <h3 className="text-lg font-bold">{teacherInfo.name}</h3>
-                        <p className="text-sm">{teacherInfo.designation}</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-sm text-gray-600">
-                        {students.length} / {teacherInfo.maxStudents} Students
-                      </span>
-                      <span className="text-sm text-gray-500">
-                        {teacherInfo.expertise}
-                      </span>
-                    </div>
-                    {students.map((student, index) => (
-                      <div 
-                        key={index} 
-                        className="bg-white rounded-lg p-3 mb-2 shadow flex justify-between items-center"
-                      >
-                        <div>
-                          <h4 className="font-semibold">{student.name}</h4>
-                          <p className="text-xs text-gray-500">{student.projectTopic}</p>
-                        </div>
-                        <button 
-                          onClick={() => removeStudentAssignment(student.name, teacherId)}
-                          className="text-red-500 hover:bg-red-50 rounded-full p-1"
-                        >
-                          <X size={16} />
-                        </button>
-                      </div>
-                    ))}
+            <h2 className="text-xl font-semibold mb-4">Teacher Assignments</h2>
+            {teachers.map(teacher => (
+              <div key={teacher.id} className="bg-white p-4 rounded-lg shadow mb-4">
+                <div className="flex items-center gap-4 mb-4">
+                  <img src={teacher.image} alt={teacher.name} className="w-12 h-12 rounded-full" />
+                  <div>
+                    <h3 className="font-medium">{teacher.name}</h3>
+                    <p className="text-sm text-gray-500">{teacher.designation}</p>
                   </div>
                 </div>
-              ))}
-            </div>
+                <div className="space-y-2">
+                  {assignments[teacher.id]?.map(student => (
+                    <div key={student.id} className="flex justify-between items-center bg-gray-50 p-2 rounded">
+                      <span>{student.name}</span>
+                      <button
+                        onClick={() => unassignStudent(student, teacher.id)}
+                        className="text-red-500 hover:bg-red-50 p-1 rounded"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
-        )}
+        </div>
 
-        {/* Action Buttons */}
-        <div className="mt-8 flex justify-end space-x-4">
-          <button 
-            onClick={handleDownload}
-            className="flex items-center bg-green-500 text-white px-4 py-2 
-                       rounded-lg hover:bg-green-600 transition"
+        <div className="mt-8 flex justify-end">
+          <button
+            onClick={downloadAssignments}
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center gap-2"
           >
-            <Download size={16} className="mr-2" /> Download Assignments
+            <Download className="h-4 w-4" />
+            Download Assignments
           </button>
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default Update;
+export default StudentProjectManager;

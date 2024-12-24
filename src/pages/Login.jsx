@@ -80,7 +80,7 @@ const Login = () => {
 
       <section>
         <div className="container">
-          <div className="mt-10 max-w-[500px] mx-auto bg-gray-200 px-6 py-10 rounded-lg">
+          <div className="mt-10 max-w-[500px] mx-auto bg-sky-200 px-6 py-10 rounded-lg">
             <h2 className="text-3xl text-primary font-semibold text-center mb-10">Login your account</h2>
 
             <form onSubmit={handleSubmit}>
@@ -93,7 +93,7 @@ const Login = () => {
                   showEye ? showPass ? <AiFillEyeInvisible className="absolute top-1/2 right-4 -translate-y-1/2 text-2xl cursor-pointer" onClick={() => setShowPass(!showPass)} /> : <AiFillEye className="absolute top-1/2 right-4 -translate-y-1/2 text-2xl cursor-pointer" onClick={() => setShowPass(!showPass)} /> : ''
                 }
               </div>
-              <button type="submit" className="bg-sky-300 btn-block !rounded-md mt-5">Login</button>
+              <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors mt-4">Login</button>
             </form>
             <p className="font-semibold text-center mt-6">Don&apos;t have an account? <Link to='/register' className="text-primary" onClick={() => scrollTo(0, 0)} state={prevState}>Register</Link></p>
 

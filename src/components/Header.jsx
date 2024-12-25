@@ -1,19 +1,24 @@
-import { useContext, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { GlobalContext } from "../context/ContextProvider";
-
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase.config";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../hooks/useAxios";
 
 // Importing icons from react-icons
-import { FiMenu, FiX, FiChevronDown, FiLogOut } from "react-icons/fi";
+import { FiMenu, FiX, FiChevronDown, FiLogOut, FiUser } from "react-icons/fi";
 
 const Header = () => {
   const { user } = useContext(GlobalContext);
-  const [drawerShow, setDrawerShow] = useState(false);
-  const [profileShow, setProfileShow] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setProfileDropdownOpen(false);
+  }, [location]);
 
   const handleLogout = () => {
     signOut(auth)
@@ -31,21 +36,23 @@ const Header = () => {
     { path: '/', label: 'Home' },
     { path: '/project', label: 'Teacher' },
     { path: '/group', label: 'Student' },
-    { path: '/update', label: 'Assign' },
+    { path: '/assign', label: 'Assign' },
   ];
 
-  const renderNavLinks = () => (
-    <ul className="flex flex-col lg:flex-row items-center gap-8">
+  const renderNavLinks = (mobile = false) => (
+    <ul className={`flex ${mobile ? 'flex-col' : 'flex-row'} items-center gap-1 md:gap-2`}>
       {navLinks.map(({ path, label }) => (
         <li key={path}>
           <NavLink
             to={path}
             className={({ isActive }) =>
-              `text-base font-medium transition-colors hover:text-teal-500 ${
-                isActive ? "text-teal-500" : "text-gray-700"
+              `text-sm md:text-base font-medium transition-all duration-200 px-3 py-2 rounded-md ${
+                isActive 
+                  ? "text-white bg-teal-500 hover:bg-teal-600" 
+                  : "text-gray-700 hover:text-teal-500 hover:bg-gray-100"
               }`
             }
-            onClick={() => setDrawerShow(false)}
+            onClick={() => setMobileMenuOpen(false)}
           >
             {label}
           </NavLink>
@@ -55,10 +62,10 @@ const Header = () => {
   );
 
   const renderUserProfile = () => (
-    <div className="relative ml-8">
-      <div
-        className="flex items-center gap-3 cursor-pointer p-2 rounded-lg hover:bg-gray-100 transition-colors"
-        onClick={() => setProfileShow(!profileShow)}
+    <div className="relative ml-4">
+      <button
+        className="flex items-center gap-2 p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+        onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
       >
         {user?.photoURL ? (
           <img
@@ -68,18 +75,18 @@ const Header = () => {
           />
         ) : (
           <div className="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center text-white font-medium">
-            {user?.displayName?.[0] || "U"}
+            {user?.displayName?.[0] || <FiUser />}
           </div>
         )}
         <FiChevronDown
           className={`w-4 h-4 text-gray-600 transition-transform duration-200 ${
-            profileShow ? "rotate-180" : ""
+            profileDropdownOpen ? "rotate-180" : ""
           }`}
         />
-      </div>
+      </button>
       
-      {profileShow && (
-        <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
+      {profileDropdownOpen && (
+        <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50 transition-all duration-200 ease-in-out transform origin-top-right">
           <div className="px-4 py-3 border-b border-gray-100">
             <div className="flex items-center gap-3">
               {user?.photoURL ? (
@@ -90,20 +97,23 @@ const Header = () => {
                 />
               ) : (
                 <div className="w-12 h-12 rounded-full bg-teal-500 flex items-center justify-center text-white font-medium text-xl">
-                  {user?.displayName?.[0] || "U"}
+                  {user?.displayName?.[0] || <FiUser />}
                 </div>
               )}
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 truncate">
                   {user?.displayName || "User"}
                 </p>
-                <p className="text-sm text-gray-500 truncate">{user?.email}</p>
+                <p className="text-xs text-gray-500 truncate">{user?.email}</p>
               </div>
             </div>
           </div>
           <button
-            onClick={handleLogout}
-            className="w-full px-4 py-2 flex items-center gap-2 text-red-600 hover:bg-red-50 transition-colors"
+            onClick={() => {
+              handleLogout();
+              setProfileDropdownOpen(false);
+            }}
+            className="w-full px-4 py-2 flex items-center gap-2 text-red-600 hover:bg-red-50 transition-colors duration-200"
           >
             <FiLogOut className="w-4 h-4" />
             <span>Sign Out</span>
@@ -114,13 +124,13 @@ const Header = () => {
   );
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-sm border-b border-gray-200 ">
+    <header className="sticky top-0 z-40 w-full bg-white shadow-md">
       <div className="container mx-auto px-4">
         <nav className="flex h-16 items-center justify-between">
           <Link
             to="/"
             className="flex items-center gap-2"
-            onClick={() => setDrawerShow(false)}
+            onClick={() => setMobileMenuOpen(false)}
           >
             <span className="text-xl font-bold text-gray-900">
               <span className="text-teal-500">Student</span> Project Management
@@ -128,13 +138,13 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex lg:items-center">
+          <div className="hidden md:flex md:items-center">
             {renderNavLinks()}
-            <div className="flex items-center">
+            <div className="flex items-center ml-4">
               {!user ? (
                 <Link
                   to="/login"
-                  className="ml-8 inline-flex items-center justify-center rounded-lg bg-teal-500 px-4 py-2 text-sm font-medium text-white hover:bg-teal-600 transition-colors"
+                  className="inline-flex items-center justify-center rounded-md bg-teal-500 px-4 py-2 text-sm font-medium text-white hover:bg-teal-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
                 >
                   Sign In
                 </Link>
@@ -146,53 +156,54 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <button
-            onClick={() => setDrawerShow(!drawerShow)}
-            className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500"
           >
-            {drawerShow ? (
-              <FiX className="h-6 w-6 text-gray-600" />
+            <span className="sr-only">Open main menu</span>
+            {mobileMenuOpen ? (
+              <FiX className="h-6 w-6" aria-hidden="true" />
             ) : (
-              <FiMenu className="h-6 w-6 text-gray-600" />
+              <FiMenu className="h-6 w-6" aria-hidden="true" />
             )}
           </button>
         </nav>
 
         {/* Mobile Navigation */}
-        {drawerShow && (
-          <div className="fixed inset-0 top-16 bg-white z-30 lg:hidden">
-            <nav className="h-full p-4">
-              <div className="flex flex-col h-full">
-                <div className="space-y-4">
-                  {renderNavLinks()}
-                  {!user ? (
-                    <Link
-                      to="/login"
-                      className="block w-full text-center rounded-lg bg-teal-500 px-4 py-2 text-sm font-medium text-white hover:bg-teal-600 transition-colors"
-                      onClick={() => setDrawerShow(false)}
-                    >
-                      Sign In
-                    </Link>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        handleLogout();
-                        setDrawerShow(false);
-                      }}
-                      className="w-full flex items-center justify-center gap-2 rounded-lg bg-red-50 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-100 transition-colors"
-                    >
-                      <FiLogOut className="w-4 h-4" />
-                      <span>Sign Out</span>
-                    </button>
-                  )}
-                </div>
-              </div>
-            </nav>
-          </div>
-        )}
+        <div
+          className={`md:hidden transition-all duration-300 ease-in-out ${
+            mobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+          } overflow-hidden`}
+        >
+          <nav className="px-2 pb-4 pt-2">
+            {renderNavLinks(true)}
+            <div className="mt-4">
+              {!user ? (
+                <Link
+                  to="/login"
+                  className="block w-full text-center rounded-md bg-teal-500 px-4 py-2 text-sm font-medium text-white hover:bg-teal-600 transition-colors duration-200"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
+              ) : (
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="w-full flex items-center justify-center gap-2 rounded-md bg-red-50 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-100 transition-colors duration-200"
+                >
+                  <FiLogOut className="w-4 h-4" />
+                  <span>Sign Out</span>
+                </button>
+              )}
+            </div>
+          </nav>
+        </div>
       </div>
-    
     </header>
   );
 };
 
 export default Header;
+

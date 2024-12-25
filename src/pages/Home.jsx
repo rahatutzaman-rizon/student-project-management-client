@@ -5,6 +5,7 @@ import FeatureProject from "../components/home/FeatureProject";
 import BannerPage from "../components/home/BannerPage";
 import HeroSection from "../components/home/HeroSection";
 import AcademicResources from "./Academic";
+import Notice from "./Notice";
 
 
 
@@ -22,7 +23,7 @@ const Home = () => {
 
 <FeatureProject></FeatureProject>
      
-     
+     <Notice></Notice>
       <FeaturesSection  />
      
       
@@ -31,3 +32,6 @@ const Home = () => {
 };
 
 export default Home;
+
+
+

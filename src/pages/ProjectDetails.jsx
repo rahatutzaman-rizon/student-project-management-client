@@ -1,8 +1,7 @@
-import { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
 import { Link, useParams } from 'react-router-dom';
-import { Modal, Button, Label, TextInput, Textarea, Select, Tooltip } from 'flowbite-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { GlobalContext } from '../context/ContextProvider';
@@ -11,9 +10,7 @@ const ProjectDetails = () => {
   const { id, team } = useParams();
   const [project, setProject] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [showStatisticsModal, setShowStatisticsModal] = useState(false);
-  const {user} = useContext(GlobalContext);
-  console.log(user)
+  const { user } = useContext(GlobalContext);
   const [newTask, setNewTask] = useState({
     number: '',
     title: '',
@@ -24,7 +21,6 @@ const ProjectDetails = () => {
     status: 'Not Started',
   });
   const [activeTab, setActiveTab] = useState('description');
-  const [activeButton, setActiveButton] = useState('');
 
   useEffect(() => {
     fetch(`https://student-project-management-server.vercel.app/${team}/${id}`)
@@ -33,7 +29,7 @@ const ProjectDetails = () => {
   }, [id, team]);
 
   if (!project) {
-    return <div>Loading...</div>;
+    return <div className="text-center py-10">Loading...</div>;
   }
 
   const handleInputChange = (e) => {
@@ -54,7 +50,6 @@ const ProjectDetails = () => {
       });
 
       if (response.ok) {
-        // Reset the new task state
         setNewTask({
           number: '',
           title: '',
@@ -65,7 +60,6 @@ const ProjectDetails = () => {
         });
         setShowModal(false);
 
-        // Fetch the updated project data
         const updatedProject = await fetch(`https://student-project-management-server.vercel.app/${team}/${id}`)
           .then((res) => res.json());
         setProject(updatedProject);
@@ -87,8 +81,7 @@ const ProjectDetails = () => {
       });
 
       if (response.ok) {
-        // Fetch the updated project data
-        const updatedProject = await fetch( `https://student-project-management-server.vercel.app/${team}/${id}`)
+        const updatedProject = await fetch(`https://student-project-management-server.vercel.app/${team}/${id}`)
           .then((res) => res.json());
         setProject(updatedProject);
         toast.success('Task deleted successfully!');
@@ -113,7 +106,6 @@ const ProjectDetails = () => {
       });
 
       if (response.ok) {
-        // Fetch the updated project data
         const updatedProject = await fetch(`https://student-project-management-server.vercel.app/${team}/${id}`)
           .then((res) => res.json());
         setProject(updatedProject);
@@ -145,39 +137,32 @@ const ProjectDetails = () => {
         data: [statistics.completedTasks, statistics.inProgressTasks, statistics.notStartedTasks],
         backgroundColor: ['#4cad88', '#ffbb3b', '#f44336'],
         hoverBackgroundColor: ['#388e3c', '#fbc02d', '#e53935'],
-        font: {
-          size: 40,
-        },
       },
     ],
   };
 
   const options = {
-    maintainAspectRatio: false,
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
+      legend: {
+        position: 'bottom',
+      },
       title: {
         display: true,
         text: 'Tasks Progress',
         font: {
-          size: 40,
+          size: 20,
+          weight: 'bold',
         },
       },
     },
   };
 
-  const openStatisticsModal = () => {
-    setShowStatisticsModal(true);
-  };
-
-  const closeStatisticsModal = () => {
-    setShowStatisticsModal(false);
-  };
-
   const overallPerformance = () => {
     const totalTasks = statistics.totalTasks;
     const completedTasks = statistics.completedTasks;
-    const performancePercentage = ((completedTasks / totalTasks) * 100).toFixed(2);
+    const performancePercentage = totalTasks > 0 ? ((completedTasks / totalTasks) * 100).toFixed(2) : '0.00';
     return `${performancePercentage}%`;
   };
 
@@ -185,337 +170,283 @@ const ProjectDetails = () => {
     <div className="container mx-auto px-4 py-8">
       <ToastContainer />
 
-      <button className=''>
-    
       <Link
-              to={`/project`}
-              className="inline-block mt-2 mb-2 bg-pink-500 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
-            >
-              Back 
-            </Link>
-      </button>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-      <div className="bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl shadow-lg p-6 text-center">
-        <h2 className="text-2xl font-bold text-white mb-4">Supervisor</h2>
-        <p className="text-2xl font-extrabold text-white">{project.teacher}</p>
-        <p className="text-xl font-bold text-white">{project.designation}</p>
-      </div>
-      <div className="bg-gradient-to-r from-pink-500 to-red-500 rounded-2xl shadow-lg p-6 text-center">
-        <h2 className="text-2xl font-bold text-white mb-2">Group NO : {project.team}</h2>
-        <p className="text-2xl font-bold text-white">  </p>
-           <p className="text-2xl font-bold text-white">  {project.members[0].name}</p>
-            <p className="text-2xl font-bold text-white">  {project.members[1].name}</p>
-            
-      </div>
-      <div className="bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl shadow-lg p-6 text-center">
-        <h2 className="text-2xl font-bold text-white mb-2">Total Tasks: {statistics.totalTasks}</h2>
-        <p className="text-2xl font-bold text-white">Completed Tasks: {statistics.completedTasks} </p>
-      </div>
-    </div>
-
-
-      <h2 className="text-3xl mt-12 font-bold  mb-4 bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text">
-        {project.name}
-      </h2>
-      <h2 className="text-3xl mt-4 font-bold  mb-4 bg-gradient-to-r from-teal-500 to-pink-500 text-transparent bg-clip-text">
-        Type:   {project.work}  
-      </h2>
-      
-    
-     
-      <div>
-  <div className="flex mb-4">
-    <button
-      className={`px-4 py-2 rounded-l ${
-        activeButton === 'description'
-          ? 'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white'
-          : 'bg-gray-200 hover:bg-gray-300'
-      }`}
-      onClick={() => {
-        setActiveButton('description');
-        setActiveTab('description');
-      }}
-    >
-      Description
-    </button>
-    <button
-      className={`px-4 py-2 ${
-        activeButton === 'tasks'
-          ? 'bg-gradient-to-r from-green-500 via-teal-500 to-cyan-500 text-white'
-          : 'bg-gray-200 hover:bg-gray-300'
-      }`}
-      onClick={() => {
-        setActiveButton('tasks');
-        setActiveTab('tasks');
-      }}
-    >
-      Tasks
-    </button>
-    <button
-      className={`px-4 py-2 rounded-r  ${
-        activeButton === 'statistics'
-          ? 'bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white'
-          : 'bg-gray-200 hover:bg-gray-300'
-      }`}
-      onClick={() => {
-        setActiveButton('statistics');
-        setActiveTab('statistics');
-      }}
-    >
-      Statistics
-    </button>
-  </div>
-
-  {/* Tab Content */}
-  <div className="flex-grow overflow-auto">
-    {activeTab === 'description' && (
-      <div>
-        <h3 className="text-2xl font-bold mb-4 text-indigo-500 mt-2">Description:</h3>
-        <p className='text-purple-700 font-semibold'>{project.description}</p>
-
-        <div className=" mt-4 bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 p-6 rounded-lg shadow-lg">
-  <h3 className="text-xl font-bold mb-4  text-white">Team Members</h3>
-  <ul>
-    {project.members.map((member) => (
-      <li
-        key={member.id}
-        className="bg-white rounded-lg p-4 mb-4 shadow-md text-black text-xl"
+        to="/project"
+        className="inline-block mb-6 bg-[#3069a1] hover:bg-[#0074D9] text-white font-bold py-2 px-4 rounded transition duration-300"
       >
-        <span className="font-bold">Member Name: {member.name}</span>
-        <br />
-        ID: {member.it}
-        <br />
-        Email: {member.mail}
-        <br />
-        Contact: {member.contact}
-      </li>
-    ))}
-  </ul>
-</div>
+        Back to Projects
+      </Link>
 
-      </div>
-    )}
-
-    {activeTab === 'tasks' && (
-      <div>
-        <h3 className="text-xl font-bold mb-2 text-teal-500">Tasks:</h3>
-        <table className="w-full table-auto">
-          <thead>
-            <tr className="bg-gradient-to-r from-green-500 to-cyan-500 text-white">
-              <th className="px-4 py-2">Number</th>
-              <th className="px-4 py-2">Title</th>
-              <th className="px-4 py-2">Description</th>
-              <th className="px-4 py-2"> Start to Deadline date</th>
-              <th className="px-4 py-2">Status</th>
-              <th className="px-4 py-2">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {project.tasks.map((task) => (
-              <tr key={task.number} className="odd:bg-gray-100 even:bg-white">
-                <td className="px-4 py-2 border">{task.number}</td>
-                <td className="px-4 py-2 border">{task.title}</td>
-                <td className="px-4 py-2 border">
-                  <Tooltip content={task.description}>
-                    <Button>Description</Button>
-                  </Tooltip>
-                </td>
-                <td className="px-4 py-2 border">
-                  {task.start_date} to {task.deadline}
-                </td>
-                <td className="px-4 py-2 border">
-                  <span
-                    className={`px-2 py-1 rounded-full font-bold bg-white ${
-                      task.status === 'In Progress'
-                        ? 'bg-yellow-200 text-yellow-800'
-                        : task.status === 'Completed'
-                        ? 'bg-green-200 text-green-800'
-                        : 'bg-red-200 text-red-400'
-                    }`}
-                  >
-                    {task.status}
-                  </span>
-                </td>
-                <td className="px-4 py-2 border flex gap-2">
-                  <Button color="failure" onClick={() => handleDeleteTask(task.number)}>
-                    Delete
-                  </Button>
-                  <Select
-                    value={task.status}
-                    onChange={(e) => handleStatusUpdate(task.number, e.target.value)}
-                  >
-                    <option value="Not Started">Not Started</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Completed">Completed</option>
-                  </Select>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    )}
-
-    {activeTab === 'statistics' && (
-      <div className="bg-gradient-to-r from-indigo-500 to-purple-700 rounded-lg p-6 shadow-lg">
-  <h3 className="text-2xl font-bold mb-4 text-white">Project Overview</h3>
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
-    <div className="bg-white rounded-lg p-4 shadow-md">
-      <h4 className="text-2xl font-semibold text-gray-700 mb-2">Total Tasks</h4>
-      <p className="text-3xl font-bold text-indigo-600">{statistics.totalTasks}</p>
-    </div>
-    <div className="bg-white rounded-lg p-4 shadow-md">
-      <h4 className="text-2xl font-semibold text-gray-700 mb-2">Completed Tasks</h4>
-      <p className="text-3xl font-bold text-green-600">{statistics.completedTasks}</p>
-    </div>
-    <div className="bg-white rounded-lg p-4 shadow-md">
-      <h4 className="text-2xl font-semibold text-gray-700 mb-2">In Progress Tasks</h4>
-      <p className="text-3xl font-bold text-yellow-600">{statistics.inProgressTasks}</p>
-    </div>
-    <div className="bg-white rounded-lg p-4 shadow-md">
-      <h4 className="text-2xl font-semibold text-gray-700 mb-2">Not Started Tasks</h4>
-      <p className="text-3xl font-bold text-red-600">{statistics.notStartedTasks}</p>
-    </div>
-  </div>
-  <div className="bg-white rounded-lg p-6 shadow-md">
-    <h3 className="text-2xl font-bold mb-4 text-gray-700">Overall Progress</h3>
-    <p className="text-3xl text-pink-600">{overallPerformance()}</p>
-  </div>
-  <div className="bg-white rounded-lg p-6 shadow-md mt-6">
-    <h3 className="text-3xl font-bold mb-4 text-teal-700">Task Statistics</h3>
-    <div className="h-64">
-      <Pie data={chartData} options={options} />
-    </div>
-  </div>
-</div>
-    )}
-  </div>
-</div>
-     
-     <div className="mt-4">
-       <Button onClick={() => setShowModal(true)}>Add Task with Email</Button>
-     </div>
-
-     <Modal show={showModal} onClose={() => setShowModal(false)}>
-       <Modal.Header>Add New Task</Modal.Header>
-       <Modal.Body>
-         <div className="space-y-6">
-           <div>
-             <div className="mb-2 block">
-               <Label htmlFor="number" value="Task Number" />
-             </div>
-             <TextInput
-               id="number"
-               name="number"
-               value={newTask.number}
-               onChange={handleInputChange}
-               type="number"
-               required
-             />
-           </div>
-           <div>
-             <div className="mb-2 block">
-               <Label htmlFor="title" value="Task Title" />
-             </div>
-             <TextInput
-               id="title"
-               name="title"
-               value={newTask.title}
-               onChange={handleInputChange}
-               type="text"
-               required
-             />
-           </div>
-           <div>
-             <div className="mb-2 block">
-               <Label htmlFor="description" value="Task Description" />
-             </div>
-             <Textarea
-               id="description"
-               name="description"
-               value={newTask.description}
-               onChange={handleInputChange}
-               required
-             />
-           </div>
-
-
-           <div>
-             <div className="mb-2 block">
-               <Label htmlFor="start_date" value="start_date" />
-             </div>
-             <TextInput
-               id="start_date"
-               name="start_date"
-               value={newTask.start_date}
-               onChange={handleInputChange}
-               type="date"
-               required
-             />
-           </div>
-           <div>
-             <div className="mb-2 block">
-               <Label htmlFor="deadline" value="Deadline" />
-             </div>
-             <TextInput
-               id="deadline"
-               name="deadline"
-               value={newTask.deadline}
-               onChange={handleInputChange}
-               type="date"
-               required
-             />
-           </div>
-           <div>
-             <div className="mb-2 block">
-               <Label htmlFor="status" value="Status" />
-             </div>
-             <Select
-               id="status"
-               name="status"
-               value={newTask.status}
-               onChange={handleInputChange}
-               required
-             >
-               <option value="Not Started">Not Started</option>
-               <option value="In Progress">In Progress</option>
-               <option value="Completed">Completed</option>
-             </Select>
-           </div>
-         </div>
-       </Modal.Body>
-       <Modal.Footer>
-         <Button color="failure" onClick={() => setShowModal(false)}>
-           Close
-         </Button>
-         <Button color="success" onClick={handleAddTask}>
-           Submit with Email
-         </Button>
-       </Modal.Footer>
-     </Modal>
-
-     <Modal
-       isOpen={showStatisticsModal}
-       onRequestClose={closeStatisticsModal}
-       className="fixed inset-0 flex items-center justify-center z-50"
-       overlayClassName="fixed inset-0 bg-gray-800 bg-opacity-75"
-     >
-       <div className="bg-white rounded-lg p-8 max-w-3xl">
-         <div className="flex justify-between items-center mb-6">
-           <h2 className="text-2xl font-bold">Task Statistics</h2>
-           <Button color="primary" onClick={closeStatisticsModal}>
-             Close
-           </Button>
-
-</div>
-         
-          
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="bg-gradient-to-r from-[#3069a1] to-[#0074D9] rounded-lg shadow-lg p-6 text-center">
+          <h2 className="text-2xl font-bold text-white mb-2">Supervisor</h2>
+          <p className="text-xl font-semibold text-white">{project.teacher}</p>
+          <p className="text-lg text-white">{project.designation}</p>
         </div>
-      </Modal>
+        <div className="bg-gradient-to-r from-[#3069a1] to-[#0074D9] rounded-lg shadow-lg p-6 text-center">
+          <h2 className="text-2xl font-bold text-white mb-2">Group NO : {project.team}</h2>
+          <p className="text-xl font-semibold text-white">{project.members[0].name}</p>
+          <p className="text-xl font-semibold text-white">{project.members[1].name}</p>
+        </div>
+        <div className="bg-gradient-to-r from-[#3069a1] to-[#0074D9] rounded-lg shadow-lg p-6 text-center">
+          <h2 className="text-2xl font-bold text-white mb-2">Total Tasks: {statistics.totalTasks}</h2>
+          <p className="text-xl font-semibold text-white">Completed Tasks: {statistics.completedTasks}</p>
+        </div>
+      </div>
+
+      <h2 className="text-3xl font-bold mb-4 text-[#3069a1]">{project.name}</h2>
+      <h3 className="text-2xl font-semibold mb-6 text-[#0074D9]">Type: {project.work}</h3>
+
+      <div className="mb-8">
+        <div className="flex mb-4">
+          {['description', 'tasks', 'statistics'].map((tab) => (
+            <button
+              key={tab}
+              className={`px-6 py-2 text-lg font-semibold rounded-t-lg ${
+                activeTab === tab
+                  ? 'bg-[#3069a1] text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            </button>
+          ))}
+        </div>
+
+        <div className="bg-white rounded-lg shadow-md p-6">
+          {activeTab === 'description' && (
+            <div>
+              <h3 className="text-2xl font-bold mb-4 text-[#3069a1]">Description:</h3>
+              <p className="text-lg text-gray-700 mb-6">{project.description}</p>
+
+              <div className="bg-gradient-to-r from-[#3069a1] to-[#0074D9] p-6 rounded-lg shadow-lg">
+                <h3 className="text-2xl font-bold mb-4 text-white">Team Members</h3>
+                <ul className="space-y-4">
+                  {project.members.map((member) => (
+                    <li
+                      key={member.id}
+                      className="bg-white rounded-lg p-4 shadow-md text-gray-800"
+                    >
+                      <p className="text-xl font-bold mb-2">{member.name}</p>
+                      <p className="text-lg">ID: {member.it}</p>
+                      <p className="text-lg">Email: {member.mail}</p>
+                      <p className="text-lg">Contact: {member.contact}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'tasks' && (
+            <div>
+              <h3 className="text-2xl font-bold mb-4 text-[#3069a1]">Tasks:</h3>
+              <table className="w-full table-auto">
+                <thead>
+                  <tr className="bg-[#3069a1] text-white">
+                    <th className="px-4 py-2">Number</th>
+                    <th className="px-4 py-2">Title</th>
+                    <th className="px-4 py-2">Description</th>
+                    <th className="px-4 py-2">Start to Deadline</th>
+                    <th className="px-4 py-2">Status</th>
+                    <th className="px-4 py-2">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {project.tasks.map((task) => (
+                    <tr key={task.number} className="odd:bg-gray-100 even:bg-white">
+                      <td className="px-4 py-2 border">{task.number}</td>
+                      <td className="px-4 py-2 border">{task.title}</td>
+                      <td className="px-4 py-2 border">
+                        <button
+                          className="bg-[#3069a1] text-white px-3 py-1 rounded hover:bg-[#0074D9]"
+                          onClick={() => alert(task.description)}
+                        >
+                          View
+                        </button>
+                      </td>
+                      <td className="px-4 py-2 border">
+                        {task.start_date} to {task.deadline}
+                      </td>
+                      <td className="px-4 py-2 border">
+                        <span
+                          className={`px-2 py-1 rounded-full font-semibold ${
+                            task.status === 'In Progress'
+                              ? 'bg-yellow-200 text-yellow-800'
+                              : task.status === 'Completed'
+                              ? 'bg-green-200 text-green-800'
+                              : 'bg-red-200 text-red-800'
+                          }`}
+                        >
+                          {task.status}
+                        </span>
+                      </td>
+                      <td className="px-4 py-2 border">
+                        <button
+                          className="bg-red-500 text-white px-3 py-1 rounded mr-2 hover:bg-red-600"
+                          onClick={() => handleDeleteTask(task.number)}
+                        >
+                          Delete
+                        </button>
+                        <select
+                          value={task.status}
+                          onChange={(e) => handleStatusUpdate(task.number, e.target.value)}
+                          className="border rounded px-2 py-1"
+                        >
+                          <option value="Not Started">Not Started</option>
+                          <option value="In Progress">In Progress</option>
+                          <option value="Completed">Completed</option>
+                        </select>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {activeTab === 'statistics' && (
+            <div className="bg-gradient-to-r from-[#3069a1] to-[#0074D9] rounded-lg p-6 shadow-lg">
+              <h3 className="text-2xl font-bold mb-6 text-white">Project Overview</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <StatCard title="Total Tasks" value={statistics.totalTasks} color="bg-blue-500" />
+                <StatCard title="Completed Tasks" value={statistics.completedTasks} color="bg-green-500" />
+                <StatCard title="In Progress Tasks" value={statistics.inProgressTasks} color="bg-yellow-500" />
+                <StatCard title="Not Started Tasks" value={statistics.notStartedTasks} color="bg-red-500" />
+              </div>
+              <div className="bg-white rounded-lg p-6 shadow-md mb-8">
+                <h3 className="text-2xl font-bold mb-4 text-[#3069a1]">Overall Progress</h3>
+                <p className="text-4xl font-bold text-[#0074D9]">{overallPerformance()}</p>
+              </div>
+              <div className="bg-white rounded-lg p-6 shadow-md">
+  <h3 className="text-2xl font-bold mb-4 text-[#3069a1]">Task Statistics</h3>
+  <div className="h-64">
+    <Pie data={chartData} options={options} />
+  </div>
+</div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="mt-8">
+        <button
+          onClick={() => setShowModal(true)}
+          className="bg-[#3069a1] hover:bg-[#0074D9] text-white font-bold py-2 px-4 rounded transition duration-300"
+        >
+          Add Task
+        </button>
+      </div>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
+          <div className="bg-white rounded-lg p-8 max-w-md md:max-w-4xl  w-full">
+            <h2 className="text-2xl font-bold mb-4 text-[#3069a1] mt-12">Add New Task</h2>
+            <form onSubmit={(e) => { e.preventDefault(); handleAddTask(); }}>
+              <div className="mb-4">
+                <label htmlFor="number" className="block text-sm font-medium text-gray-700">Task Number</label>
+                <input
+                  type="number"
+                  id="number"
+                  name="number"
+                  value={newTask.number}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#3069a1] focus:ring focus:ring-[#3069a1] focus:ring-opacity-50"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="title" className="block text-sm font-medium text-gray-700">Task Title</label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  value={newTask.title}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#3069a1] focus:ring focus:ring-[#3069a1] focus:ring-opacity-50"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="description" className="block text-sm font-medium text-gray-700">Task Description</label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={newTask.description}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#3069a1] focus:ring focus:ring-[#3069a1] focus:ring-opacity-50"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="start_date" className="block text-sm font-medium text-gray-700">Start Date</label>
+                <input
+                  type="date"
+                  id="start_date"
+                  name="start_date"
+                  value={newTask.start_date}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#3069a1] focus:ring focus:ring-[#3069a1] focus:ring-opacity-50"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="deadline" className="block text-sm font-medium text-gray-700">Deadline</label>
+                <input
+                  type="date"
+                  id="deadline"
+                  name="deadline"
+                  value={newTask.deadline}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#3069a1] focus:ring focus:ring-[#3069a1] focus:ring-opacity-50"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="status" className="block text-sm font-medium text-gray-700">Status</label>
+                <select
+                  id="status"
+                  name="status"
+                  value={newTask.status}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#3069a1] focus:ring focus:ring-[#3069a1] focus:ring-opacity-50"
+                  required
+                >
+                  <option value="Not Started">Not Started</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                </select>
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="mr-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded transition duration-300"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-[#3069a1] hover:bg-[#0074D9] text-white font-bold py-2 px-4 rounded transition duration-300"
+                >
+                  Add Task
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
+
+const StatCard = ({ title, value, color }) => (
+  <div className={`${color} rounded-lg p-4 text-white`}>
+    <h4 className="text-lg font-semibold mb-2">{title}</h4>
+    <p className="text-3xl font-bold">{value}</p>
+  </div>
+);
 
 export default ProjectDetails;
 

@@ -36,6 +36,7 @@ const Header = () => {
     { path: '/', label: 'Home' },
     { path: '/project', label: 'Teacher' },
     { path: '/group', label: 'Student' },
+    { path: '/dashboard', label: 'Dashboard' },
     { path: '/assign', label: 'Assign' },
   ];
 
@@ -124,7 +125,7 @@ const Header = () => {
   );
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-white shadow-md">
+    <header className="sticky top-0 z-40 w-full bg-white shadow-md mb-[-12px]">
       <div className="container mx-auto px-4">
         <nav className="flex h-16 items-center justify-between">
           <Link

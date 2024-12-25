@@ -146,8 +146,8 @@ const ProjectTeams = () => {
       return null;
     }
 
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-[#001f3f] to-[#0074D9] flex items-center justify-center">
+    return ( 
+      <div className="min-h-screen bg-gradient-to-br from-[#001f3f] to-[#0074D9] flex items-center justify-center mb-[-12px]">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

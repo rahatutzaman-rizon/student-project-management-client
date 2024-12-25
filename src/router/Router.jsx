@@ -16,6 +16,7 @@ import Project from "../pages/Project";
 import Projects from "../pages/Projects";
 import ProjectDetails from "../pages/ProjectDetails";
 import Update from "../pages/Update";
+import Dashboard from "../dashboard/dashboard";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: '/:team/:id',
         element: <PrivateRoute><ProjectDetails></ProjectDetails></PrivateRoute> 
+      },
+      {
+        path: '/dashboard',
+        element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute> 
       },
 
 

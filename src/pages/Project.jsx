@@ -84,7 +84,7 @@ const Project = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#3069a1] to-[#0074D9] py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-[#3069a1] to-[#0074D9] py-12 px-4 mb-[-64px]">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <motion.div

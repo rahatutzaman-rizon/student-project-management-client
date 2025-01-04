@@ -122,7 +122,7 @@ const HeroSection = () => {
               </h2>
               <div className="relative w-full aspect-video">
                 <iframe
-                  src="https://www.youtube.com/embed/roz9sXFkTuE?si=ZVEpCpdgOlgLO9OG"
+                  src="https://www.youtube.com/embed/CFf3n6ubPYk?si=tKR3khuSdVRmsPT9"
                   title="Tutorial Video"
                   className="w-full h-full rounded-lg"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
